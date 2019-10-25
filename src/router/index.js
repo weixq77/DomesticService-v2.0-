@@ -119,7 +119,72 @@ export const asyncRoutes = [
       }
     ]
   },
- 
+  {
+    path: '/category',
+    component: Layout,
+    redirect: '/category/list',
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/category/list'),
+        name: 'category',
+        meta: { title: '栏目管理', icon: 'edit', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/product',
+    component: Layout,
+    redirect: '/product/list',
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/product/list'),
+        name: 'product',
+        meta: { title: '产品管理', icon: 'edit', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/order',
+    component: Layout,
+    redirect: '/order/list',
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/order/list'),
+        name: 'order',
+        meta: { title: '订单管理', icon: 'edit', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/comment',
+    component: Layout,
+    redirect: '/comment/list',
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/comment/list'),
+        name: 'comment',
+        meta: { title: '评论管理', icon: 'edit', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/waiter',
+    component: Layout,
+    redirect: '/waiter/list',
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/pages/waiter/list'),
+        name: 'waiter',
+        meta: { title: '员工管理', icon: 'edit', noCache: true }
+      }
+    ]
+  },
+
   /*
   {
     path: '/permission',
