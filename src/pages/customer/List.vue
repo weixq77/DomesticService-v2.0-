@@ -75,7 +75,7 @@
             <a href="" class="el-icon-edit-outline" @click.prevent="editCustomer(scope.row)" />
             <span class="blank_margin" />
             <!-- 详情 -->
-            <a href="" class="el-icon-tickets" @click.prevent="" />
+            <a href="" class="el-icon-tickets" @click.prevent="DetailsHandler(scope.row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -157,8 +157,8 @@ export default {
     // 映射store中的突变函数和异步请求的动作
     // 分页查询顾客信息，根据id删除顾客信息，修改保存顾客信息，批量删除顾客信息
     ...mapActions('customer', ['loadCustomerData', 'deleteCustomerById', 'saveOrUpdateCustomer', 'batchDeleteCustomers']),
-    // 显示模态框，关闭模态框,根据名字查询，跟号码查询
-    ...mapMutations('customer', ['showModal', 'closeModal', 'searchByName', 'searchByTel']),
+    // 显示模态框，关闭模态框,根据名字查询，跟号码查询,设置单条顾客信息
+    ...mapMutations('customer', ['customerFindById', 'closeModal', 'searchByName', 'searchByTel','SetCustomer']),
 
     // 普通方法
     //   fun:当多选的checkbox发生变化时将选中的当前行id添加到数组中
@@ -250,7 +250,18 @@ export default {
       this.saveOrUpdateCustomer(this.form)
         .then((response) => {
           this.$message({ type: 'success', message: response.statusText })
-        })
+      })
+    },
+    // fun:查看顾客详情信息
+    DetailsHandler(customer){
+      // 设置顾客单条信息
+      this.SetCustomer(customer);
+      //跳转到详情页面
+      // this.$router.push("/customerDetails")
+      this.$router.push({
+        path:'/customer/details',
+        query:{id:customer.id}
+      })
     }
   }
 }
