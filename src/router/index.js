@@ -80,7 +80,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -115,7 +115,14 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/pages/customer/List'),
         name: 'customer',
-        meta: { title: '顾客管理', icon: 'edit', noCache: true }
+        meta: { title: '顾客管理', icon: 'people', noCache: true }
+      },
+      {
+        path: 'details',
+        hidden:true,
+        component: () => import('@/pages/customer/Details'),
+        // name: 'customerDetail',
+        // meta: { title: '顾客管理', icon: 'edit', noCache: true }
       }
     ]
   },
@@ -128,7 +135,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/pages/category/list'),
         name: 'category',
-        meta: { title: '栏目管理', icon: 'edit', noCache: true }
+        meta: { title: '栏目管理', icon: 'list', noCache: true }
       }
     ]
   },
@@ -141,7 +148,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/pages/product/list'),
         name: 'product',
-        meta: { title: '产品管理', icon: 'edit', noCache: true }
+        meta: { title: '产品管理', icon: 'shopping', noCache: true }
       }
     ]
   },
@@ -154,20 +161,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/pages/order/list'),
         name: 'order',
-        meta: { title: '订单管理', icon: 'edit', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/comment',
-    component: Layout,
-    redirect: '/comment/list',
-    children: [
-      {
-        path: 'list',
-        component: () => import('@/pages/comment/list'),
-        name: 'comment',
-        meta: { title: '评论管理', icon: 'edit', noCache: true }
+        meta: { title: '订单管理', icon: 'skill', noCache: true }
       }
     ]
   },
@@ -180,7 +174,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/pages/waiter/list'),
         name: 'waiter',
-        meta: { title: '员工管理', icon: 'edit', noCache: true }
+        meta: { title: '员工管理', icon: 'user', noCache: true }
       }
     ]
   },
