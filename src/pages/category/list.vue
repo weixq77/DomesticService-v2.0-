@@ -57,11 +57,11 @@
         </div>
 
         <!-- 表格数据 -->
-        <el-table :data="categories.list" @selection-change="handleSelectionChange">
+        <el-table :data="categories.list" @selection-change="handleSelectionChange" :default-sort="{prop:'num',order:'descending'}">
             <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column prop="name" label="栏目名称"></el-table-column>
-            <el-table-column prop="num" label="序号"></el-table-column>
-            <el-table-column prop="icon" label="图标">
+            <el-table-column prop="name" label="栏目名称" sortable></el-table-column>
+            <el-table-column prop="num" sortable label="序号"></el-table-column>
+            <el-table-column prop="icon" label="图标" :formatter="formatter">
                 <template v-slot:default="record">
                     <img :src="record.row.icon" alt="">
                 </template>
@@ -160,6 +160,11 @@ export default {
         this.params.page = currentPage-1;
         this.loadData();
         },
+        // 顺序调整
+        formatter(row,column){
+            return row.icon;
+        },
+        // 搜索
         loadData(){
             // 判断是否根据栏目名称或序号进行查询
             if(this.name){
