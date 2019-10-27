@@ -54,6 +54,7 @@
        -->
     <div>
       <el-table
+        v-loading="loading"
         ref="multipleTable"
         :data="customers.list"
         tooltip-effect="dark"
@@ -164,8 +165,8 @@ export default {
   computed: {// 计算属性
     // 映射在vuex中管理的data
     // 第一个customer是绑定store中customer的模块
-    // 全部顾客信息，控制模态框显示与关闭的属性,分页查询需要的参数
-    ...mapState('customer', ['customers', 'visible', 'params']),
+    // 全部顾客信息，控制模态框显示与关闭的属性,分页查询需要的参数,加载时的旋转圈
+    ...mapState('customer', ['customers', 'visible', 'params','loading']),
     // 计算顾客信息总数，根据顾客状态过滤信息
     ...mapGetters('customer', ['countCustomers', 'customerStatusFilter'])
     // 普通data

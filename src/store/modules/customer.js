@@ -12,7 +12,8 @@ export default {
       realname: '',
       telephone: ''
     },
-    customer:{}//单条顾客信息
+    customer:{},//单条顾客信息
+    loading:false,//控制加载时的旋转圈
   },
   getters: {
     conuntCustomers(state) {
@@ -62,6 +63,14 @@ export default {
     // 设置单条顾客信息
     SetCustomer(state,customer) {
       state.customer = customer;
+    },
+    // 设置加载旋转圈旋转
+    SetStartLoading(state) {
+      state.loading = true;
+    },
+    // 设置加载旋转圈不旋转
+    SetEndLoading(state) {
+      state.loading = false;
     }
   },
   actions: {
@@ -103,10 +112,14 @@ export default {
     },
     //   fun:分页初始化顾客信息
     async loadCustomerData({ state, commit }) {
+      // 设置加载的圈圈
+      commit('SetStartLoading');
       // 1.  传递分页查询所需的参数
       // console.log("params======>",state.params)
       const response = await post('/customer/query', state.params)
       commit('refreshCustomer', response.data)
+      // 加载完毕加载圈隐藏
+      commit('SetEndLoading');
       // 2.将分页查询中按照名字号码查询的字段清空，防止下一次的查询
       state.params.realname = ''
       state.params.telephone = ''

@@ -35,12 +35,22 @@
                 </el-col>
             </el-row>
         </el-tab-pane>
-        <el-tab-pane label="订单信息" name="second">订单信息
-          {{customersOrders}}
+        <el-tab-pane label="订单信息" name="second">
+          <!-- {{customersOrders}} -->
+           <el-table 
+             :data="customersOrders"
+             tooltip-effect="dark"
+             style="width: 100%">
+                <el-table-column label="顾客姓名" prop="customerName" align="center"></el-table-column>
+                <el-table-column label="员工姓名" prop="waiterName" align="center"></el-table-column>
+                <el-table-column label="服务地址" prop="address" align="center"></el-table-column>
+                <el-table-column label="订单数量" prop="total" align="center"></el-table-column>
+                <el-table-column label="下单时间" :formatter="timestampToTime" prop="orderTime" align="center">
+                </el-table-column>
+            </el-table>
         </el-tab-pane>
         <el-tab-pane label="地址信息" name="third">
             <el-table 
-             ref="multipleTable"
              :data="address"
              tooltip-effect="dark"
              style="width: 100%">
@@ -105,6 +115,21 @@ export default {
     backHandler(){
       // this.$router.push("/customer")
       this.$router.go(-1)
+    },
+    // 时间转换函数(elementui自动获取行数据row)
+    timestampToTime(row, column){
+      let datetime = row.orderTime;
+        if(datetime){
+          datetime = new Date(datetime);
+          let y = datetime.getFullYear() + '-';
+          let mon = datetime.getMonth()+1 + '-';
+          let d = datetime.getDate() + ' ';
+          let h = datetime.getHours() + ':'
+          let m = datetime.getMinutes() + ':'
+          let s = datetime.getSeconds()
+          return y + mon + d + h + m + s;
+        }
+        return ''
     }
   }
 }
