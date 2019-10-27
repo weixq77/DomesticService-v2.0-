@@ -173,9 +173,17 @@ export const asyncRoutes = [
       {
         path: 'list',
         component: () => import('@/pages/waiter/list'),
-        name: 'waiter',
+         name: 'waiter',
         meta: { title: '员工管理', icon: 'user', noCache: true }
+      },
+      {
+        path: 'details',
+        hidden:true,
+        component: () => import('@/pages/waiter/Details'),
+        // name: 'customerDetail',
+        // meta: { title: '顾客管理', icon: 'edit', noCache: true }
       }
+
     ]
   },
 
