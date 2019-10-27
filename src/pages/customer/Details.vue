@@ -1,6 +1,14 @@
 <template>
   <div id="customerDetails">
-    <h4>{{ title }}</h4>
+    <el-row>
+      <el-col :span="6">
+        <h4>{{ title }}</h4>
+      </el-col>
+       <el-col :span="2" :offset="16">
+        <el-button size="medium" type="text" @click="backHandler">返回</el-button>
+      </el-col>
+    </el-row>
+    
 
     <el-tabs v-model="activeName">
         <el-tab-pane label="基本信息" name="first">
@@ -27,7 +35,9 @@
                 </el-col>
             </el-row>
         </el-tab-pane>
-        <el-tab-pane label="订单信息" name="second">订单信息</el-tab-pane>
+        <el-tab-pane label="订单信息" name="second">订单信息
+          {{customersOrders}}
+        </el-tab-pane>
         <el-tab-pane label="地址信息" name="third">
             <el-table 
              ref="multipleTable"
@@ -66,25 +76,35 @@ export default {
     ...mapState('address', ['address']),
     // 顾客的详细信息
     ...mapState('customer', ['customer']),
+    // 顾客的所有订单
+    ...mapState('order', ['customersOrders']),
   },
   created() {
     // vue实例初始化完成，可以通过vue访问data和methods
     // 获取实现路由跳转时传递的顾客id值
     this.CustomerId = this.$route.query.id;
     // console.log("customerId",id);
-    console.log(this.customer);
+    // console.log(this.customer);
     this.loadData();
   },
   methods: {
     // 映射store中的突变函数和异步请求的动作
     // 根据顾客id查询地址信息
     ...mapActions('address', ['findCustomerAddressById']),
+    ...mapActions('order', ['loadCustomerOrderData']),
 
     // 普通方法
     // fun:加载数据
     loadData() {
       // 通过id查询顾客地址
       this.findCustomerAddressById(this.CustomerId);
+      // 通过顾客id查询顾客所有订单信息
+      this.loadCustomerOrderData(this.CustomerId);
+    },
+    // 返回上一页顾客顾客管理页面
+    backHandler(){
+      // this.$router.push("/customer")
+      this.$router.go(-1)
     }
   }
 }

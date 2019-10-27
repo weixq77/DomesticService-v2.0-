@@ -10,7 +10,8 @@ export default {
             // 存放分页查询所需的参数
             page: 0, // 第几页
             pageSize: 7,
-          }
+        },
+        customersOrders:[]//存放指定顾客的所有订单信息
     },
     getters:{
         conuntOrders(state) {
@@ -37,6 +38,11 @@ export default {
         refreshOrder(state, orders) {
         // 需要接收一个参数orders，state是系统给的
             state.orders = orders
+        },
+        // 刷新指定顾客的所有订单
+        refreshCustomerOrder(state, orders) {
+            // 需要接收一个参数orders，state是系统给的
+            state.customersOrders = orders
         },
         refreshWaiter(state, waiters) {
             // 需要接收一个参数orders，state是系统给的
@@ -118,7 +124,14 @@ export default {
             // console.log("params======>",state.params)
             const response = await post('/order/queryPage', state.params)
             commit('refreshOrder', response.data)
-          },
+        },
+        // 获取指定顾客的所有信息
+        async loadCustomerOrderData({ state, commit },id) {
+            // 1.  传递分页查询所需的参数
+            // console.log("params======>",state.params)
+            const response = await get('/order/queryBasic', {customerId:id})
+            commit('refreshCustomerOrder', response.data)
+        },
           
     }
 }

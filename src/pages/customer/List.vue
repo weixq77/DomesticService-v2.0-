@@ -249,7 +249,7 @@ export default {
     //   fun:当分页的当前页发生了改变
     CurrentPageChangeHandle(currentPage) {
       //   将存放分页查询所需的参数值改变(后台分页从0开始，所以查询时比实际页数少1)
-      this.params.page = currentPage - 1
+      this.params.page = currentPage - 1;
       // 再次刷新获取数据
       this.loadData()
     },

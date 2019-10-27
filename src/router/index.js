@@ -121,22 +121,11 @@ export const asyncRoutes = [
         path: 'details',
         hidden:true,
         component: () => import('@/pages/customer/Details'),
-        name: 'customer',
-        meta: { title: '顾客管理', icon: 'edit', noCache: true }
+        // name: 'customerDetail',
+        // meta: { title: '顾客管理', icon: 'edit', noCache: true }
       }
     ]
   },
-  // {
-  //   path: '/customer',
-  //   component: Layout,
-  //   redirect: '/customer/details',
-  //   children: [
-  //     {
-  //       path: 'details',
-  //       component: () => import('@/pages/customer/Details'),
-  //     }
-  //   ]
-  // },
   {
     // 顾客详情信息
     path: '/category',
