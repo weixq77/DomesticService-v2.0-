@@ -14,7 +14,7 @@
       <!-- 搜索 -->
       <!-- {{name}} -->
       <el-col :span="8" :offset="10">
-        <el-form :inline="true" size="small" @submit.native.prevent>
+        <el-form :inline="true" class="search" size="small" @submit.native.prevent>
           <el-form-item style="width:80px;">
             <el-select v-model="typeTag" placeholder="类型">
               <el-option label="姓名" value="realname" />
@@ -22,9 +22,9 @@
             </el-select>
           </el-form-item>
           <el-form-item style="width:180px;">
-            <el-input
-              v-if="typeTag == 'realname'"
-              v-model="name"
+             <el-input
+              v-if="typeTag == 'telephone'"
+              v-model="tel"
               placeholder="请输入内容"
               @keyup.enter.native="loadData"
             >
@@ -32,12 +32,13 @@
             </el-input>
             <el-input
               v-else
-              v-model="tel"
+              v-model="name"
               placeholder="请输入内容"
               @keyup.enter.native="loadData"
             >
               <i slot="prefix" class="el-input__icon el-icon-search" />
             </el-input>
+           
 
           </el-form-item>
           <el-form-item>
@@ -54,7 +55,6 @@
     <div>
       <el-table
         ref="multipleTable"
-        height="384px"
         :data="customers.list"
         tooltip-effect="dark"
         style="width: 100%"
@@ -64,7 +64,19 @@
         <el-table-column prop="realname" label="姓名" align="center" />
         <el-table-column prop="telephone" label="号码" align="center" />
         <el-table-column prop="photo" label="头像" align="center" />
-        <el-table-column prop="status" label="状态" align="center" />
+        <el-table-column prop="status" label="当前状态" align="center" />
+        <el-table-column label="状态" align="center">
+          <template v-slot:default="scope">
+            <el-switch
+              v-model="scope.row.status"
+              active-text="正常"
+              inactive-text="不正常"
+              active-value="正常"
+              inactive-value="不正常"
+              @change="updateCustomerStatus($event,scope.row)">
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" align="center">
           <!-- 通过默认的插槽获取该行的对象值scope.row -->
           <template v-slot:default="scope">
@@ -75,7 +87,7 @@
             <a href="" class="el-icon-edit-outline" @click.prevent="editCustomer(scope.row)" />
             <span class="blank_margin" />
             <!-- 详情 -->
-            <a href="" class="el-icon-tickets" @click.prevent="" />
+            <a href="" class="el-icon-tickets" @click.prevent="DetailsHandler(scope.row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -103,13 +115,13 @@
 
     <!-- 对话框 -->
     <el-dialog title="添加/修改顾客信息" :visible="visible" width="40%" @close="closeDialog">
-      <el-form :model="form">
+      <el-form :model="form" :rules="rules" ref="customerForm">
         <!-- {{form}} -->
-        <el-form-item label="姓名" label-width="100px">
-          <el-input v-model="form.realname" autocomplete="off" />
+        <el-form-item label="姓名" label-width="60px" prop="realname">
+          <el-input v-model="form.realname" auto-complete="off" ></el-input>
         </el-form-item>
-        <el-form-item label="手机" label-width="100px">
-          <el-input v-model="form.telephone" autocomplete="off" />
+        <el-form-item label="手机" label-width="60px" prop="telephone">
+          <el-input v-model="form.telephone" auto-complete="off" ></el-input>
         </el-form-item>
 
       </el-form>
@@ -136,7 +148,17 @@ export default {
       selectedDelete: [], // 存放批量删除的id的数组
       name: '', // 存放按照realname搜索的内容
       tel: '', // 存放按照telephone搜索的内容
-      form: {}// 存放添加或修改的单个顾客信息
+      form: {},// 存放添加或修改的单个顾客信息
+      rules:{//表单验证规则
+        realname:[
+          {required:true,message:'请输入姓名',trigger: 'blur'},
+          {min:2,max:10,message:'长度在 2 到 10 个字符',trigger: 'blur'}
+        ],
+        telephone:[
+          {required:true,message:'请输入手机号',trigger: 'blur'},
+          {min:11,max:11,message:'长度为11个字符',trigger: 'blur'}
+        ]
+      }
     }
   },
   computed: {// 计算属性
@@ -157,8 +179,8 @@ export default {
     // 映射store中的突变函数和异步请求的动作
     // 分页查询顾客信息，根据id删除顾客信息，修改保存顾客信息，批量删除顾客信息
     ...mapActions('customer', ['loadCustomerData', 'deleteCustomerById', 'saveOrUpdateCustomer', 'batchDeleteCustomers']),
-    // 显示模态框，关闭模态框,根据名字查询，跟号码查询
-    ...mapMutations('customer', ['showModal', 'closeModal', 'searchByName', 'searchByTel']),
+    // 显示模态框，关闭模态框,根据名字查询，跟号码查询,设置单条顾客信息
+    ...mapMutations('customer', ['showModal', 'closeModal', 'searchByName', 'searchByTel','SetCustomer']),
 
     // 普通方法
     //   fun:当多选的checkbox发生变化时将选中的当前行id添加到数组中
@@ -246,11 +268,38 @@ export default {
     // fun:保存与修改数据
     submitHandler() {
       // 1.校验表单
-      // 2.提交表单
-      this.saveOrUpdateCustomer(this.form)
-        .then((response) => {
-          this.$message({ type: 'success', message: response.statusText })
-        })
+      this.$refs.customerForm.validate((valid)=>{
+        // 如果校验通过
+        if(valid){
+          alert(valid);
+          // 2.提交表单
+          this.saveOrUpdateCustomer(this.form)
+          .then((response)=>{
+            // promise为action函数的返回值，异步函数的返回值就是promise的then回调函数的参数
+            this.$message({type:"success",message:response.statusText});
+          })
+        } else {
+          return false;
+        }
+      })
+    },
+    // fun:查看顾客详情信息
+    DetailsHandler(customer){
+      // 设置顾客单条信息
+      this.SetCustomer(customer);
+      //跳转到详情页面
+      // this.$router.push("/customerDetails")
+      this.$router.push({
+        path:'/customer/details',
+        query:{id:customer.id}
+      })
+    },
+    // fun:修改顾客的状态
+    updateCustomerStatus($event,customer){
+      // 修改form表单对象
+      this.form = customer;
+      // 调用保存修改fun更新顾客状态
+      this.submitHandler();
     }
   }
 }
@@ -269,15 +318,15 @@ h4{
 }
 /* 设置表头文字颜色 */
 .el-table thead {
-    color: rgb(88, 88, 89) !important
+    color: rgb(88, 88, 89) !important;
 }
 /* 分页按钮 */
 .mypages{
     margin-top:20px;
 }
 /* 搜索框 */
-.el-form-item {
-    margin-bottom: 5px !important
+.search .el-form-item {
+    margin-bottom: 5px !important;
 }
 /* a标签间隔 */
 span.blank_margin{

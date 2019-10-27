@@ -11,7 +11,8 @@ export default {
       pageSize: 7,
       realname: '',
       telephone: ''
-    }
+    },
+    customer:{}//单条顾客信息
   },
   getters: {
     conuntCustomers(state) {
@@ -57,6 +58,10 @@ export default {
     searchByTel(state, tel) {
       state.params.realname = ''
       state.params.telephone = tel
+    },
+    // 设置单条顾客信息
+    SetCustomer(state,customer) {
+      state.customer = customer;
     }
   },
   actions: {
@@ -73,7 +78,7 @@ export default {
     // 根据id删除顾客信息
     async deleteCustomerById({ dispatch }, id) {
       // 1.删除顾客信息
-      const response = await get('/customer/deleteById', { id })
+      const response = await get('/customer/deleteById', {id})
       // 2.刷新(再用dispatch去触发获取一遍数据)
       dispatch('loadCustomerData')
       // 3.提示成功
