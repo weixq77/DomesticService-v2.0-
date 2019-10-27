@@ -107,7 +107,7 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/customers',
+    path: '/customer',
     component: Layout,
     redirect: '/customer/list',
     children: [
@@ -116,20 +116,27 @@ export const asyncRoutes = [
         component: () => import('@/pages/customer/List'),
         name: 'customer',
         meta: { title: '顾客管理', icon: 'edit', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/customer',
-    component: Layout,
-    redirect: '/customer/details',
-    children: [
+      },
       {
         path: 'details',
+        hidden:true,
         component: () => import('@/pages/customer/Details'),
+        name: 'customer',
+        meta: { title: '顾客管理', icon: 'edit', noCache: true }
       }
     ]
   },
+  // {
+  //   path: '/customer',
+  //   component: Layout,
+  //   redirect: '/customer/details',
+  //   children: [
+  //     {
+  //       path: 'details',
+  //       component: () => import('@/pages/customer/Details'),
+  //     }
+  //   ]
+  // },
   {
     // 顾客详情信息
     path: '/category',

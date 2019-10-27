@@ -318,7 +318,7 @@ h4{
 }
 /* 设置表头文字颜色 */
 .el-table thead {
-    color: rgb(88, 88, 89) !important
+    color: rgb(88, 88, 89) !important;
 }
 /* 分页按钮 */
 .mypages{
@@ -326,7 +326,7 @@ h4{
 }
 /* 搜索框 */
 .search .el-form-item {
-    margin-bottom: 5px !important
+    margin-bottom: 5px !important;
 }
 /* a标签间隔 */
 span.blank_margin{
