@@ -87,7 +87,7 @@
                 </el-form-item>
                 <el-form-item label="父栏目" label-width="100px" prop="parentId">
                     <el-select v-model="category.parentId" placeholder="请选择...">
-                        <el-option v-for="c in categoryParentIdFilter" :label="c.name" :value="c.id" :key="c.id"></el-option>
+                        <el-option v-for="c in categoryFistList" :label="c.name" :value="c.id" :key="c.id"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -133,12 +133,13 @@ export default {
         }
     },
     computed:{
-        ...mapState("category",["categories","visible","title","params"]),
+        ...mapState("category",["categories","visible","title","params","categoryFistList"]),
         // 存放一级栏目信息的变量
-        ...mapGetters('category', ['categoryParentIdFilter'])
+        // ...mapGetters('category', ['categoryParentIdFilter'])
     },
     created(){
         this.loadData();
+        // console.log("categoryFistList--->>",this.categoryFistList)
         // this.findAllCategories();
     },
     methods:{

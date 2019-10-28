@@ -28,10 +28,6 @@ export default {
           return state.categories;
         }
       }
-    },
-    // 需要为获取器传递参数的写法
-    categoryParentIdFilter:(state)=>{
-      return state.categoryFistList.filter(item=>item.parentId == '');
     }
   },
   mutations:{
@@ -52,10 +48,8 @@ export default {
     },
     // 需要接受一个参数，这个参数就是categories
     refreshCategoryFistList(state,categories){
-      // console.log('state->',categories);
       // 修改一级的栏目信息
-      state.categoryFistList = categories;
-      
+      state.categoryFistList = categories.filter(item=>item.parentId == null); 
     },
     // 模态框标题
     setTitle(state,title){
