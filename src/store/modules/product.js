@@ -1,6 +1,6 @@
 // import request from '@/utils/request'
 import { get, post, post_array } from '@/http/axios'
-export default {
+export default { 
   namespaced: true,
   state: {
     visible: false, // 控制对话框的显示与关闭
@@ -11,7 +11,9 @@ export default {
       pageSize: 7,
       name: '',
       price: ''
-    }
+    },
+    product:{}, //单条产品信息
+    loading:false,//控制加载时的旋转圈
   },
   getters: {
     conuntProducts(state) {
@@ -42,7 +44,7 @@ export default {
     // 关闭模态框
     closeModal(state) {
       state.visible = false
-    },
+    }, 
     // 刷新产品信息
     refreshProduct(state, products) {
       // 需要接收一个参数products，state是系统给的
@@ -53,10 +55,22 @@ export default {
       state.params.name = name
       state.params.price = ''
     },
-    // 根据号码查询
+    // 根据价格查询
     searchByPrice(state, price) {
       state.params.name = ''
       state.params.price = price
+    },
+    // 设置单条产品信息
+    SetCustomer(state,product) {
+      state.product = product;
+    },
+    // 设置加载旋转圈旋转
+    SetStartLoading(state) {
+      state.loading = true;
+    },
+    // 设置加载旋转圈不旋转
+    SetEndLoading(state) {
+      state.loading = false;
     }
   },
   actions: {
@@ -106,14 +120,15 @@ export default {
     },
     //   fun:分页初始化产品信息
     async loadProductData({ state, commit }) {
-      // 每次模糊查询先将page设置为0，不然有一些显示不了
-      if(state.params.name || state.params.price){
-        state.params.page = 0;
-      }
+      // 设置加载的圈圈
+      commit('SetStartLoading');
+
       // 1.  传递分页查询所需的参数
       // console.log("params======>",state.params)
       const response = await post('/product/query', state.params)
       commit('refreshProduct', response.data)
+      // 加载完毕加载圈隐藏
+      commit('SetEndLoading');
       // 2.将分页查询中按照名字号码查询的字段清空，防止下一次的查询
       state.params.name = ''
       state.params.price = ''
