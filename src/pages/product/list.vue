@@ -70,7 +70,7 @@
             <el-switch
               v-model="scope.row.status"
               active-text="正常"
-              inactive-text="不正常"
+              inactive-text=""
               active-value="正常"
               inactive-value="不正常"
               @change="updateProductStatus($event,scope.row)">
@@ -296,7 +296,11 @@ export default {
       // 修改form表单对象
       this.form = product;
       // 调用保存修改fun更新产品状态
-      this.submitHandler();
+      this.saveOrUpdateProduct(this.form)
+      .then((response)=>{
+        // promise为action函数的返回值，异步函数的返回值就是promise的then回调函数的参数
+        this.$message({type:"success",message:response.statusText});
+      })
     }
   }
 }

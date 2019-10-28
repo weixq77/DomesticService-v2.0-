@@ -17,7 +17,7 @@
           <el-form-item style="width:80px;">
             <el-select v-model="typeTag" placeholder="类型">
               <el-option label="姓名" value="realname" />
-               <el-option label="性别" value="gender" />
+               <el-option label="号码" value="tele" />
             </el-select>
           </el-form-item>
           <el-form-item style="width:180px;">
