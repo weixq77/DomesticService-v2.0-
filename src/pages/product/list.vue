@@ -11,7 +11,7 @@
           <el-button type="danger" size="small" plain @click.prevent="deleteProduct()">批量删除</el-button>
         </div>
       </el-col>
-      <!-- 搜索 -->
+      <!-- 搜索 --> 
       <!-- {{name}} -->
       <el-col :span="8" :offset="10">
         <el-form :inline="true" size="small" @submit.native.prevent>
@@ -63,7 +63,19 @@
         <el-table-column type="selection" width="55" />
         <el-table-column prop="name" label="商品名称" align="center" />
         <el-table-column prop="price" label="商品价格" align="center" />
-        <el-table-column prop="status" label="状态" align="center" />
+        <el-table-column prop="status" label="当前状态" align="center" />
+        <el-table-column prop="status" label="状态" align="center">
+          <template v-slot:default="scope">
+            <el-switch
+              v-model="scope.row.status"
+              active-text="正常"
+              inactive-text="不正常"
+              active-value="正常"
+              inactive-value="不正常"
+              @change="updateProductStatus($event,scope.row)">
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column prop="description" label="商品描述" align="center" />
         <el-table-column label="操作" align="center">
           <!-- 通过默认的插槽获取该行的对象值scope.row -->
@@ -75,7 +87,7 @@
             <a href="" class="el-icon-edit-outline" @click.prevent="editProduct(scope.row)" />
             <span class="blank_margin" />
             <!-- 详情 -->
-            <a href="" class="el-icon-tickets" @click.prevent="" />
+            <!-- <a href="" class="el-icon-tickets" @click.prevent="" /> -->
           </template>
         </el-table-column>
       </el-table>
@@ -103,13 +115,16 @@
 
     <!-- 对话框 -->
     <el-dialog title="添加/修改产品信息" :visible="visible" width="40%" @close="closeDialog">
-      <el-form :model="form">
+      <el-form :model="form" :rules="rules" ref="productForm">
         <!-- {{form}} -->
         <el-form-item label="商品名称" label-width="100px">
           <el-input v-model="form.name" autocomplete="off" />
         </el-form-item>
         <el-form-item label="商品价格" label-width="100px">
-          <el-input v-model="form.description" type="price" autocomplete="off" />
+          <el-input v-model="form.price" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="商品描述" label-width="100px">
+          <el-input v-model="form.description" type="textarea" autocomplete="off" />
         </el-form-item>
 
       </el-form>
@@ -136,7 +151,21 @@ export default {
       selectedDelete: [], // 存放批量删除的id的数组
       name: '', // 存放按照name搜索的内容
       price: '', // 存放按照price搜索的内容
-      form: {}// 存放添加或修改的单个产品信息
+      form: {},// 存放添加或修改的单个产品信息
+      rules:{
+        name:[
+          {required:true,message:'请输入商品名称',trigger: 'blur'},
+          {min:2,max:10,message:'长度在 2 到 10 个字符',trigger: 'blur'}
+        ],
+        price:[
+          {required:true,message:'商品价格',trigger: 'blur'},
+          {min:0,message:'商品价格不可为空',trigger: 'blur'}
+        ],
+        description:[
+          {required:true,message:'请输入商品描述',trigger: 'blur'},
+          {min:1,message:'商品描述不可为空',trigger: 'blur'}
+        ],
+      },
     }
   },
   computed: {// 计算属性
@@ -246,15 +275,31 @@ export default {
     // fun:保存与修改数据
     submitHandler() {
       // 1.校验表单
-      // 2.提交表单
-      this.saveOrUpdateProduct(this.form)
-        .then((response) => {
-          this.$message({ type: 'success', message: response.statusText })
-        })
+      this.$refs.productForm.validate((valid)=>{
+        // 如果校验通过
+        if(valid){
+          alert(valid);
+          // 2.提交表单
+          this.saveOrUpdateProduct(this.form)
+          .then((response)=>{
+            // promise为action函数的返回值，异步函数的返回值就是promise的then回调函数的参数
+            this.$message({type:"success",message:response.statusText});
+          })
+        } else {
+          return false;
+        }
+      })
+    },
+    // 修改商品状态
+    updateProductStatus($event,product){
+      // 修改form表单对象
+      this.form = product;
+      // 调用保存修改fun更新产品状态
+      this.submitHandler();
     }
   }
 }
-</script>
+</script> 
 
 <style scoped>
 h4{
