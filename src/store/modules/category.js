@@ -82,7 +82,7 @@ export default {
 
     // 根据id删除
     async deleteCategoryById({state,dispatch},id){
-      alert(id)
+      // alert(id)
       // 1. 删除栏目信息
       let response = await get("/category/deleteById",{id});
 

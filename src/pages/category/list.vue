@@ -195,28 +195,49 @@ export default {
         },
         // 删除
         deleteHandler(id){
-            this.deleteCategoryById(id)
-            .then((response)=>{
-                this.$message({
-                    type:"suceess",
-                    message:response.statusText
+            // 弹框提示是否删除
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then(() => {
+                    // 根据id删除
+                    this.deleteCategoryById(id)
+
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
                 });
-            },(error)=>{
-                this.$message({
-                    type:"error",
-                    message:error
-                });
-            })
-        },
+            },
+            
         // 批量删除
         batchDeleteHandler(ids){
-            this.batchDeleteCategory(ids)
-            .then((response)=>{
-                this.$message({
-                    type:"suceess",
-                    message:response.statusText
+            // 弹框提示是否删除
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then(() => {
+                    // 根据ids批量删除
+                    this.batchDeleteCategory(ids)
+
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
                 });
-            })
+
         },
         // 提交
         submitHandler(){
