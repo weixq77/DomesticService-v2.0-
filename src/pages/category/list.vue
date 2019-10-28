@@ -201,6 +201,11 @@ export default {
                     type:"suceess",
                     message:response.statusText
                 });
+            },(error)=>{
+                this.$message({
+                    type:"error",
+                    message:error
+                });
             })
         },
         // 批量删除
