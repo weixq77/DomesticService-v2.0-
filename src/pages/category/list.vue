@@ -125,10 +125,10 @@ export default {
                 num:[
                     {required:true,message:'请输入序号',trigger:'blur'},
                     {min:2,max:10,message:'请输入2个以上字符',trigger:'blur'}
-                ],
-                parentId:[
-                    {required:true,message:'请选择父栏目',trigger:'blur'},
                 ]
+                // parentId:[
+                //     {required:true,message:'请选择父栏目',trigger:'blur'},
+                // ]
             }
         }
     },
@@ -165,6 +165,10 @@ export default {
                 this.searchByName(this.name)
             }else if(this.num){
                 this.searchByNum(this.num)
+            }else{
+                this.searchByName("")
+                this.searchByNum("")
+
             }
             this.loadCategoryData();
         },

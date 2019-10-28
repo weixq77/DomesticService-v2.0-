@@ -88,6 +88,9 @@ export default {
       commit('refreshCategories',response.data);
       // 查询全部栏目信息获取一级栏目
       dispatch('findAllCategories');
+      // 2.将分页查询中按照名字号码查询的字段清空，防止下一次的查询
+      state.params.name = ''
+      state.params.num = ''
     },
 
     // 根据id删除
