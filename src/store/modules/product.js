@@ -51,10 +51,10 @@ export default {
     // 根据产品名称查询
     searchByName(state, name) {
       state.params.name = name
-      // state.params.price = ''
+      state.params.price = ''
     },
     // 根据号码查询
-    searchByTel(state, price) {
+    searchByPrice(state, price) {
       state.params.name = ''
       state.params.price = price
     }
