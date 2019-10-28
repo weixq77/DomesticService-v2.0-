@@ -81,7 +81,7 @@ export default {
     },
 
     // 根据id删除
-    async deleteCategoryById({dispatch},id){
+    async deleteCategoryById({state,dispatch},id){
       // 1. 删除栏目信息
       let response = await get("/category/deleteById",{id});
       state.params.page = 0;
@@ -92,7 +92,7 @@ export default {
     },
 
     // 批量删除
-    async batchDeleteCategory({dispatch},ids){
+    async batchDeleteCategory({state,dispatch},ids){
       let response = await post_array("/category/batchDelete",ids);
       state.params.page = 0;
       dispatch("loadCategoryData")

@@ -71,7 +71,7 @@ export default {
       context.commit('refreshProduct', response.data)
     },
     // 根据id删除产品信息
-    async deleteProductById({ dispatch }, id) {
+    async deleteProductById({state, dispatch }, id) {
       // 1.删除产品信息
       const response = await get('/product/deleteById', { id })
       state.params.page = 0;
@@ -81,7 +81,7 @@ export default {
       return response
     },
     // 批量删除产品信息
-    async batchDeleteProducts({ dispatch }, ids) {
+    async batchDeleteProducts({state, dispatch }, ids) {
       const response = await post_array('/product/batchDelete', ids)
       state.params.page = 0;
       dispatch('loadProductData')

@@ -85,7 +85,7 @@ export default {
       context.commit('refreshCustomer', response.data)
     },
     // 根据id删除顾客信息
-    async deleteCustomerById({ dispatch }, id) {
+    async deleteCustomerById({state, dispatch }, id) {
       // 1.删除顾客信息
       const response = await get('/customer/deleteById', {id})
       state.params.page = 0;
@@ -95,7 +95,7 @@ export default {
       return response
     },
     // 批量删除顾客信息
-    async batchDeleteCustomers({ dispatch }, ids) {
+    async batchDeleteCustomers({state, dispatch }, ids) {
       const response = await post_array('/customer/batchDelete', ids)
       state.params.page = 0;
       dispatch('loadCustomerData')
