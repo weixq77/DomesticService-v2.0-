@@ -88,6 +88,7 @@ export default {
     async deleteCustomerById({ dispatch }, id) {
       // 1.删除顾客信息
       const response = await get('/customer/deleteById', {id})
+      state.params.page = 0;
       // 2.刷新(再用dispatch去触发获取一遍数据)
       dispatch('loadCustomerData')
       // 3.提示成功
@@ -96,6 +97,7 @@ export default {
     // 批量删除顾客信息
     async batchDeleteCustomers({ dispatch }, ids) {
       const response = await post_array('/customer/batchDelete', ids)
+      state.params.page = 0;
       dispatch('loadCustomerData')
       return response
     },

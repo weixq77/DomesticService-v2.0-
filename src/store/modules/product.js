@@ -74,6 +74,7 @@ export default {
     async deleteProductById({ dispatch }, id) {
       // 1.删除产品信息
       const response = await get('/product/deleteById', { id })
+      state.params.page = 0;
       // 2.刷新(再用dispatch去触发获取一遍数据)
       dispatch('loadProductData')
       // 3.提示成功
@@ -82,6 +83,7 @@ export default {
     // 批量删除产品信息
     async batchDeleteProducts({ dispatch }, ids) {
       const response = await post_array('/product/batchDelete', ids)
+      state.params.page = 0;
       dispatch('loadProductData')
       return response
     },

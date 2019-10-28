@@ -72,22 +72,27 @@ export default {
       // context是系统分发给actions的对象，里面包含的commit可以让action去触发突变，让突变去修改state
       const response = await get('/waiter/findAll')
       // 2.将顾客信息设置到state.customers中
+      
       // 使用commit去触发突变，先指定突变名称，再传递一个参数
       context.commit('refreshWaiter', response.data)
     },
     // 根据id删除顾客信息
-    async deleteWaiterById({ dispatch }, id) {
+    async deleteWaiterById({ state,dispatch }, id) {
+
       // 1.删除顾客信息
       const response = await get('/waiter/deleteById', {id})
-      // 2.刷新(再用dispatch去触发获取一遍数据)
+      state.params.page = 0;
       dispatch('loadWaiterData')
+
+      // 2.刷新(再用dispatch去触发获取一遍数据)
       // 3.提示成功
       return response
     },
     // 批量删除顾客信息
-    async batchDeleteWaiter({ dispatch }, ids) {
-        alert(ids);
+    async batchDeleteWaiter({state, dispatch }, ids) {
+        // alert(ids);
       const response = await post_array('/waiter/batchDelete', ids)
+      state.params.page = 0;
       dispatch('loadWaiterData')
       return response
     },
@@ -112,6 +117,7 @@ export default {
       // console.log("params======>",state.params)
       const response = await post('/waiter/query', state.params)
       commit('refreshWaiter', response.data)
+      
       // 2.将分页查询中按照名字号码查询的字段清空，防止下一次的查询
       state.params.realname = ''
       state.params.telephone = ''
