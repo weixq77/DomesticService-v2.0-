@@ -53,7 +53,7 @@ export default {
     // 根据产品名称查询
     searchByName(state, name) {
       state.params.name = name
-      // state.params.price = ''
+      state.params.price = ''
     },
     // 根据价格查询
     searchByPrice(state, price) {
@@ -85,7 +85,11 @@ export default {
       context.commit('refreshProduct', response.data)
     },
     // 根据id删除产品信息
-    async deleteProductById({ dispatch }, id) {
+    async deleteProductById({state, dispatch }, id) {
+      // 先判断当前删除的是否为当前页最后一条，如果是，则查询页减一
+      if((state.products.total%state.params.pageSize)==1){
+        state.params.page--;
+      }
       // 1.删除产品信息
       const response = await get('/product/deleteById', { id })
       // 2.刷新(再用dispatch去触发获取一遍数据)
@@ -94,7 +98,11 @@ export default {
       return response
     },
     // 批量删除产品信息
-    async batchDeleteProducts({ dispatch }, ids) {
+    async batchDeleteProducts({state, dispatch }, ids) {
+       // 先判断当前删除的是否为当前页最后一条，如果是，则查询页减一
+      if(((state.products.total-ids.length)%state.params.pageSize)==0){
+        state.params.page--;
+      }
       const response = await post_array('/product/batchDelete', ids)
       dispatch('loadProductData')
       return response
@@ -114,6 +122,7 @@ export default {
     async loadProductData({ state, commit }) {
       // 设置加载的圈圈
       commit('SetStartLoading');
+
       // 1.  传递分页查询所需的参数
       // console.log("params======>",state.params)
       const response = await post('/product/query', state.params)

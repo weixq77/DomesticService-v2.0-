@@ -22,9 +22,10 @@
             </el-select>
           </el-form-item>
           <el-form-item style="width:180px;">
+            
             <el-input
-              v-if="typeTag == 'name'"
-              v-model="name"
+              v-if="typeTag == 'price'"
+              v-model="price"
               placeholder="请输入内容"
               @keyup.enter.native="loadData"
             >
@@ -32,7 +33,7 @@
             </el-input>
             <el-input
               v-else
-              v-model="price"
+              v-model="name"
               placeholder="请输入内容"
               @keyup.enter.native="loadData"
             >
@@ -187,7 +188,7 @@ export default {
     // 分页查询产品信息，根据id删除产品信息，修改保存产品信息，批量删除产品信息
     ...mapActions('product', ['loadProductData', 'deleteProductById', 'saveOrUpdateProduct', 'batchDeleteProducts']),
     // 显示模态框，关闭模态框,根据名字查询，跟号码查询
-    ...mapMutations('product', ['showModal', 'closeModal', 'searchByName', 'searchByTel']),
+    ...mapMutations('product', ['showModal', 'closeModal', 'searchByName', 'searchByPrice']),
 
     // 普通方法
     //   fun:当多选的checkbox发生变化时将选中的当前行id添加到数组中
@@ -205,8 +206,8 @@ export default {
       // 判断是否有根据商品名称或者价格进行查询
       if (this.name) {
         this.searchByName(this.name)
-      } else if (this.tel) {
-        this.searchByTel(this.tel)
+      } else if (this.price) {
+        this.searchByPrice(this.price)
       }
       this.loadProductData()
     },

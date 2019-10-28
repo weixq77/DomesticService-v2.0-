@@ -71,7 +71,7 @@
             <el-switch
               v-model="scope.row.status"
               active-text="正常"
-              inactive-text="不正常"
+              inactive-text=""
               active-value="正常"
               inactive-value="不正常"
               @change="updateCustomerStatus($event,scope.row)">
@@ -272,7 +272,7 @@ export default {
       this.$refs.customerForm.validate((valid)=>{
         // 如果校验通过
         if(valid){
-          alert(valid);
+          // alert(valid);
           // 2.提交表单
           this.saveOrUpdateCustomer(this.form)
           .then((response)=>{
@@ -300,7 +300,11 @@ export default {
       // 修改form表单对象
       this.form = customer;
       // 调用保存修改fun更新顾客状态
-      this.submitHandler();
+      this.saveOrUpdateCustomer(this.form)
+      .then((response)=>{
+        // promise为action函数的返回值，异步函数的返回值就是promise的then回调函数的参数
+        this.$message({type:"success",message:response.statusText});
+      })
     }
   }
 }

@@ -1,6 +1,13 @@
 <template>
   <div id="waiterDetails">
-    <h4>{{ title }}</h4>
+    <el-row>
+      <el-col :span="6">
+        <h4>{{ title }}</h4>
+      </el-col>
+       <el-col :span="2" :offset="16">
+        <el-button size="medium" type="text" @click="backHandler">返回</el-button>
+      </el-col>
+    </el-row>
 
     <el-tabs v-model="activeName">
         <el-tab-pane label="基本信息" name="first">
@@ -30,20 +37,6 @@
                 </el-col>
             </el-row>
         </el-tab-pane>
-        <!-- <el-tab-pane label="订单信息" name="second">订单信息</el-tab-pane>
-        <el-tab-pane label="地址信息" name="third">
-            <el-table 
-             ref="multipleTable"
-             :data="address"
-             tooltip-effect="dark"
-             style="width: 100%">
-                <el-table-column label="省" prop="province" align="center"></el-table-column>
-                <el-table-column label="市" prop="city" align="center"></el-table-column>
-                <el-table-column label="区" prop="area" align="center"></el-table-column>
-                <el-table-column label="街道" prop="address" align="center"></el-table-column>
-                <el-table-column label="手机号" prop="telephone" align="center"></el-table-column>
-            </el-table>
-        </el-tab-pane> -->
     </el-tabs>
 
   </div>
@@ -65,18 +58,13 @@ export default {
   },
    computed: {// 计算属性
     // 映射在vuex中管理的data
-    // 顾客的所有地址信息
-    // ...mapState('address', ['address']),
-    // 顾客的详细信息
+    // 员工的详细信息
     ...mapState('waiter', ['waiter']),
   },
   created() {
     // vue实例初始化完成，可以通过vue访问data和methods
     // 获取实现路由跳转时传递的顾客id值
     this.WaiterId = this.$route.query.id;
-    // console.log("customerId",id);
-    console.log(this.waiter);
-    this.loadData();
   },
   methods: {
     // 映射store中的突变函数和异步请求的动作
@@ -89,6 +77,11 @@ export default {
     //   // 通过id查询顾客地址
     //   this.findCustomerAddressById(this.CustomerId);
     // }
+    // 返回上一页顾客顾客管理页面
+    backHandler(){
+      // this.$router.push("/customer")
+      this.$router.go(-1)
+    },
   }
 }
 </script>

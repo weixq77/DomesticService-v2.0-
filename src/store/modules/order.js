@@ -108,6 +108,7 @@ export default {
         async deleteOrderById({ dispatch }, id) {
             // 1.删除订单信息
             const response = await get('/order/deleteById', { id })
+            
             // 2.刷新(再用dispatch去触发获取一遍数据)
             dispatch('loadOrderData')
             // 3.提示成功

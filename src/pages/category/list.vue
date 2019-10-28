@@ -11,15 +11,6 @@
                     <el-button type="danger" size="small" plain @click="batchDeleteHandler(ids)">批量删除</el-button>
                 </el-col>
                 <!-- 搜索 -->
-                <!-- <el-col :span="8">
-                    <el-form :inline="true">
-                        <el-form-item>
-                            <el-input @keyup.enter.native="searchHandler" placeholder="请输入关键字" v-model="input" class="input-with-select">
-                                <el-button @click="searchHandler" slot="append" icon="el-icon-search"></el-button>
-                            </el-input>
-                        </el-form-item>
-                    </el-form>
-                </el-col> -->
                 <el-col :span="8" :offset="10">
                     <el-form :inline="true" class="search" size="small" @submit.native.prevent>
                     <el-form-item style="width:80px;">
@@ -96,7 +87,7 @@
                 </el-form-item>
                 <el-form-item label="父栏目" label-width="100px" prop="parentId">
                     <el-select v-model="category.parentId" placeholder="请选择...">
-                        <el-option v-for="c in categories.list" :label="c.name" :value="c.id" :key="c.id"></el-option>
+                        <el-option v-for="c in categoryFistList" :label="c.name" :value="c.id" :key="c.id"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -134,18 +125,21 @@ export default {
                 num:[
                     {required:true,message:'请输入序号',trigger:'blur'},
                     {min:2,max:10,message:'请输入2个以上字符',trigger:'blur'}
-                ],
-                parentId:[
-                    {required:true,message:'请选择父栏目',trigger:'blur'},
                 ]
+                // parentId:[
+                //     {required:true,message:'请选择父栏目',trigger:'blur'},
+                // ]
             }
         }
     },
     computed:{
-        ...mapState("category",["categories","visible","title","params"])
+        ...mapState("category",["categories","visible","title","params","categoryFistList"]),
+        // 存放一级栏目信息的变量
+        // ...mapGetters('category', ['categoryParentIdFilter'])
     },
     created(){
         this.loadData();
+        // console.log("categoryFistList--->>",this.categoryFistList)
         // this.findAllCategories();
     },
     methods:{
@@ -171,6 +165,10 @@ export default {
                 this.searchByName(this.name)
             }else if(this.num){
                 this.searchByNum(this.num)
+            }else{
+                this.searchByName("")
+                this.searchByNum("")
+
             }
             this.loadCategoryData();
         },
@@ -195,23 +193,49 @@ export default {
         },
         // 删除
         deleteHandler(id){
-            this.deleteCategoryById(id)
-            .then((response)=>{
-                this.$message({
-                    type:"suceess",
-                    message:response.statusText
+            // 弹框提示是否删除
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then(() => {
+                    // 根据id删除
+                    this.deleteCategoryById(id)
+
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
                 });
-            })
-        },
+            },
+            
         // 批量删除
         batchDeleteHandler(ids){
-            this.batchDeleteCategory(ids)
-            .then((response)=>{
-                this.$message({
-                    type:"suceess",
-                    message:response.statusText
+            // 弹框提示是否删除
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then(() => {
+                    // 根据ids批量删除
+                    this.batchDeleteCategory(ids)
+
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });          
                 });
-            })
+
         },
         // 提交
         submitHandler(){
