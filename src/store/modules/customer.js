@@ -4,7 +4,7 @@ export default {
   namespaced: true,
   state: {
     visible: false, // 控制对话框的显示与关闭
-    customers: [], // 存放所有的顾客信息
+    customers: [], // 存放当前页所有的顾客信息
     params: {
       // 存放分页查询所需的参数
       page: 0, // 第几页
@@ -86,9 +86,13 @@ export default {
     },
     // 根据id删除顾客信息
     async deleteCustomerById({state, dispatch }, id) {
+      // 先判断当前删除的是否为当前页最后一条，如果是，则查询页减一
+      if((state.customers.total%state.params.pageSize)==1){
+        state.params.page--;
+      }
       // 1.删除顾客信息
       const response = await get('/customer/deleteById', {id})
-      state.params.page = 0;
+
       // 2.刷新(再用dispatch去触发获取一遍数据)
       dispatch('loadCustomerData')
       // 3.提示成功
@@ -96,8 +100,12 @@ export default {
     },
     // 批量删除顾客信息
     async batchDeleteCustomers({state, dispatch }, ids) {
+      // 先判断当前删除的是否为当前页最后一条，如果是，则查询页减一
+      if(((state.customers.total-ids.length)%state.params.pageSize)==0){
+        state.params.page--;
+      }
       const response = await post_array('/customer/batchDelete', ids)
-      state.params.page = 0;
+
       dispatch('loadCustomerData')
       return response
     },

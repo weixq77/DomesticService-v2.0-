@@ -4,7 +4,7 @@ export default {
   namespaced:true,
   state:{
     visible:false,
-    categories:[],
+    categories:[],//存放当前页的栏目信息
     // ids:[],
     title:"添加栏目信息",
     params:{
@@ -12,7 +12,8 @@ export default {
       pageSize:5,
       name:'',
       num:''
-    }
+    },
+    categoryFistList:[],//存放一级栏目的信息
   },
   getters:{
     countCategories:(state)=>{
@@ -27,6 +28,10 @@ export default {
           return state.categories;
         }
       }
+    },
+    // 需要为获取器传递参数的写法
+    categoryParentIdFilter:(state)=>{
+      return state.categoryFistList.filter(item=>item.parentId == '');
     }
   },
   mutations:{
@@ -40,8 +45,17 @@ export default {
     },
     // 需要接受一个参数，这个参数就是categories
     refreshCategories(state,categories){
-      console.log('state->',state.categories);
+      // console.log('state->',state.categories);
+      // 修改当前页的栏目信息
       state.categories = categories;
+      
+    },
+    // 需要接受一个参数，这个参数就是categories
+    refreshCategoryFistList(state,categories){
+      // console.log('state->',categories);
+      // 修改一级的栏目信息
+      state.categoryFistList = categories;
+      
     },
     // 模态框标题
     setTitle(state,title){
@@ -66,10 +80,10 @@ export default {
       // 1. 查询所有栏目信息
       let response = await get("/category/findAll");
       // 2. 将栏目信息设置到state.categories中
-      context.commit("refreshCategories",response.data)
+      context.commit("refreshCategoryFistList",response.data)
     },
     
-    async loadCategoryData({state,commit}){
+    async loadCategoryData({state,commit,dispatch}){
       // 每次模糊查询先将page设置为0，不然有一些显示不了
       if(state.params.name || state.params.num){
         state.params.page = 0;
@@ -78,15 +92,19 @@ export default {
       // state.categories = response.data;
       // alert(response.data);
       commit('refreshCategories',response.data);
+      // 查询全部栏目信息获取一级栏目
+      dispatch('findAllCategories');
     },
 
     // 根据id删除
     async deleteCategoryById({state,dispatch},id){
-      // alert(id)
+       // 先判断当前删除的是否为当前页最后一条，如果是，则查询页减一
+       if((state.categories.total%state.params.pageSize)==1){
+        state.params.page--;
+        }
       // 1. 删除栏目信息
       let response = await get("/category/deleteById",{id});
 
-      state.params.page = 0;
       // 2. 刷新
       dispatch("loadCategoryData")
       // 3. 提示成功
@@ -95,8 +113,11 @@ export default {
 
     // 批量删除
     async batchDeleteCategory({state,dispatch},ids){
+      // 先判断当前删除的是否为当前页最后一条，如果是，则查询页减一
+      if(((state.categories.total-ids.length)%state.params.pageSize)==0){
+        state.params.page--;
+      }
       let response = await post_array("/category/batchDelete",ids);
-      state.params.page = 0;
       dispatch("loadCategoryData")
       return response;
     },

@@ -11,15 +11,6 @@
                     <el-button type="danger" size="small" plain @click="batchDeleteHandler(ids)">批量删除</el-button>
                 </el-col>
                 <!-- 搜索 -->
-                <!-- <el-col :span="8">
-                    <el-form :inline="true">
-                        <el-form-item>
-                            <el-input @keyup.enter.native="searchHandler" placeholder="请输入关键字" v-model="input" class="input-with-select">
-                                <el-button @click="searchHandler" slot="append" icon="el-icon-search"></el-button>
-                            </el-input>
-                        </el-form-item>
-                    </el-form>
-                </el-col> -->
                 <el-col :span="8" :offset="10">
                     <el-form :inline="true" class="search" size="small" @submit.native.prevent>
                     <el-form-item style="width:80px;">
@@ -96,7 +87,7 @@
                 </el-form-item>
                 <el-form-item label="父栏目" label-width="100px" prop="parentId">
                     <el-select v-model="category.parentId" placeholder="请选择...">
-                        <el-option v-for="c in categories.list" :label="c.name" :value="c.id" :key="c.id"></el-option>
+                        <el-option v-for="c in categoryParentIdFilter" :label="c.name" :value="c.id" :key="c.id"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -142,7 +133,9 @@ export default {
         }
     },
     computed:{
-        ...mapState("category",["categories","visible","title","params"])
+        ...mapState("category",["categories","visible","title","params"]),
+        // 存放一级栏目信息的变量
+        ...mapGetters('category', ['categoryParentIdFilter'])
     },
     created(){
         this.loadData();

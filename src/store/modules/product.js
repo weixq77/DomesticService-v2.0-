@@ -72,9 +72,12 @@ export default {
     },
     // 根据id删除产品信息
     async deleteProductById({state, dispatch }, id) {
+      // 先判断当前删除的是否为当前页最后一条，如果是，则查询页减一
+      if((state.products.total%state.params.pageSize)==1){
+        state.params.page--;
+      }
       // 1.删除产品信息
       const response = await get('/product/deleteById', { id })
-      state.params.page = 0;
       // 2.刷新(再用dispatch去触发获取一遍数据)
       dispatch('loadProductData')
       // 3.提示成功
@@ -82,8 +85,11 @@ export default {
     },
     // 批量删除产品信息
     async batchDeleteProducts({state, dispatch }, ids) {
+       // 先判断当前删除的是否为当前页最后一条，如果是，则查询页减一
+      if(((state.products.total-ids.length)%state.params.pageSize)==0){
+        state.params.page--;
+      }
       const response = await post_array('/product/batchDelete', ids)
-      state.params.page = 0;
       dispatch('loadProductData')
       return response
     },
