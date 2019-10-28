@@ -116,10 +116,15 @@ export default {
       commit('SetStartLoading');
       // 1.  传递分页查询所需的参数
       // console.log("params======>",state.params)
+      // 每次模糊查询先将page设置为0，不然有一些显示不了
+      if(state.params.realname || state.params.telephone){
+        state.params.page = 0;
+      }
       const response = await post('/customer/query', state.params)
       commit('refreshCustomer', response.data)
       // 加载完毕加载圈隐藏
       commit('SetEndLoading');
+      // console.log("refreshCustomer",state.customers);
       // 2.将分页查询中按照名字号码查询的字段清空，防止下一次的查询
       state.params.realname = ''
       state.params.telephone = ''

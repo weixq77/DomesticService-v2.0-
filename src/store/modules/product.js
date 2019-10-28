@@ -98,6 +98,10 @@ export default {
     },
     //   fun:分页初始化产品信息
     async loadProductData({ state, commit }) {
+      // 每次模糊查询先将page设置为0，不然有一些显示不了
+      if(state.params.name || state.params.price){
+        state.params.page = 0;
+      }
       // 1.  传递分页查询所需的参数
       // console.log("params======>",state.params)
       const response = await post('/product/query', state.params)

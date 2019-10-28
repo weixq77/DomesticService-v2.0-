@@ -70,6 +70,10 @@ export default {
     },
     
     async loadCategoryData({state,commit}){
+      // 每次模糊查询先将page设置为0，不然有一些显示不了
+      if(state.params.name || state.params.num){
+        state.params.page = 0;
+      }
       let response = await post("/category/query",state.params);
       // state.categories = response.data;
       // alert(response.data);
@@ -95,6 +99,7 @@ export default {
 
     // 提交保存
     async saveOrUpdateCategory({dispatch,commit},category){
+       
       // 1. 提交请求
       let response = await post("/category/saveOrUpdate",category)
       // 2. 关闭模态
