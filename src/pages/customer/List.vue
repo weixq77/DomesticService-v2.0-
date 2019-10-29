@@ -1,7 +1,6 @@
 <template>
   <div id="customer">
     <h4>{{ title }}</h4>
-
     <!-- 按钮和搜索栏 gutter=20栅格间隔-->
     <el-row :gutter="20" justify="end">
       <!-- 添加 删除按钮 -->
@@ -16,7 +15,7 @@
       <el-col :span="8" :offset="10">
         <el-form :inline="true" class="search" size="small" @submit.native.prevent>
           <el-form-item style="width:80px;">
-            <el-select v-model="typeTag" placeholder="类型">
+            <el-select v-model="typeTag" placeholder="姓名" @change="typeChange">
               <el-option label="姓名" value="realname" />
               <el-option label="号码" value="telephone" />
             </el-select>
@@ -26,7 +25,8 @@
               v-if="typeTag == 'telephone'"
               v-model="tel"
               placeholder="请输入内容"
-              @keyup.enter.native="loadData"
+              key="telephone-input"
+              @keyup.enter.native="searchFind"
             >
               <i slot="prefix" class="el-input__icon el-icon-search" />
             </el-input>
@@ -34,7 +34,8 @@
               v-else
               v-model="name"
               placeholder="请输入内容"
-              @keyup.enter.native="loadData"
+              key="name-input"
+              @keyup.enter.native="searchFind"
             >
               <i slot="prefix" class="el-input__icon el-icon-search" />
             </el-input>
@@ -42,7 +43,11 @@
 
           </el-form-item>
           <el-form-item>
-            <el-button @click.prevent="loadData">搜索</el-button>
+            <el-button @click.prevent="searchFind">搜索</el-button>
+          </el-form-item>
+          <el-form-item>
+            <!-- <a href="" class="el-icon-refresh-right" @click.prevent="referData" /> -->
+            <a href="" class="el-icon-refresh" @click.prevent="referData" />
           </el-form-item>
         </el-form>
       </el-col>
@@ -145,7 +150,7 @@ export default {
   data() {
     return {
       title: '顾客管理',
-      typeTag: '', // 存放搜索类型realname和telephone
+      typeTag: 'realname', // 存放搜索类型realname和telephone
       selectedDelete: [], // 存放批量删除的id的数组
       name: '', // 存放按照realname搜索的内容
       tel: '', // 存放按照telephone搜索的内容
@@ -184,7 +189,7 @@ export default {
     ...mapMutations('customer', ['showModal', 'closeModal', 'searchByName', 'searchByTel','SetCustomer']),
 
     // 普通方法
-    //   fun:当多选的checkbox发生变化时将选中的当前行id添加到数组中
+    //   fun:当多选的checkbox发生变化时将选中的当前行id添加到被选中批量删除的数组中
     SelectChangeHandle(val) {
     //    每一次checkbox发生变化都先将这个变量值清空
       this.selectedDelete = val.map(item => item.id)
@@ -194,15 +199,48 @@ export default {
       this.form = {}
       this.closeModal()
     },
+    // 刷新数据
+    referData(){
+      // 可以清空之前搜索留下的内容，也可以起到刷新的作用
+      this.params.realname = '';
+      this.params.telephone = '';
+      this.name = '';
+      this.tel = '';
+      this.loadData();
+    },
     // fun:分页加载数据
     loadData() {
+      this.loadCustomerData()
+    },
+    // 搜索的类型发生改变的时候调用的函数
+    typeChange(){
+      // 若当前类型为realname
+      if(this.typeTag == 'realname'){
+        // 清空输入tel的inpu值
+        this.tel = '';
+      }else if(this.typeTag == 'telephone'){
+        // 清空输入realname的inpu值
+        this.name = '';
+      }
+    },
+    // fun：搜索查询
+    searchFind(){
       // 判断是否有根据名字或者号码进行查询
+      // 每次搜索前先将搜索的page页数设置为0，也就是从第一页开始搜索
+      this.params.page=0;
+      // 判断name是否有内容有就是按照名字查询
       if (this.name) {
+        // alert(this.name)
         this.searchByName(this.name)
       } else if (this.tel) {
+        // 如果name没有内容查看tel是否有内容，有按照tel查询
         this.searchByTel(this.tel)
+      }else{
+        // 如果名字和号码都没有内容则不是模糊查询都设置为空
+        // 因为这个函数有设置tel为空，所以只需设置一个即可
+        this.searchByName("")
       }
-      this.loadCustomerData()
+      this.loadData();
     },
     //   fun：删除信息(有id为单个删除，无id为批量删除)
     deleteCustomer(id) {
