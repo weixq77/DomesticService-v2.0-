@@ -186,6 +186,26 @@ export const asyncRoutes = [
 
     ]
   },
+  {
+    path: '/check',
+    component: Layout,
+    // redirect: '/check/waiterCheck',
+    meta: { title: '审核大厅'},
+    children: [
+      {
+        path: 'waiterCheck',
+        component: () => import('@/pages/check/waiterCheck'),
+        name: 'waiterCheck',
+        meta: { title: '员工审核', icon: 'people', noCache: true }
+      },
+      {
+        path: 'money',
+        component: () => import('@/pages/check/money'),
+        name: 'money',
+        meta: { title: '提现审核', icon: 'edit', noCache: true }
+      }
+    ]
+  },
 
   /*
   {

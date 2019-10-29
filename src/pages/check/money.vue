@@ -1,5 +1,5 @@
 <template>
-    <div class="category">
+    <div class="moneyCheck">
         
        
     </div>
