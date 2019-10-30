@@ -6,20 +6,21 @@
       <!-- 搜索栏 -->
       <el-col :span="12">
         <el-form :inline="true">
-          <el-form-item label="姓名">
-            <el-input size="small" v-model="params.realname"></el-input>
+          <el-form-item label="">
+            <el-input size="small" placeholder="请输入内容"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="handleQuery">查询</el-button>
+            <el-button type="primary" size="small">查询</el-button>
           </el-form-item>
         </el-form>
       </el-col>
       <!-- 按钮 -->
       <el-col :span="12" style="text-align:right;line-height:40px;height:40px;">
-        <el-button size="small" type="primary" @click="handleToAdd">添加</el-button>
+        <el-button size="small" type="primary">添加</el-button>
       </el-col>
     <!-- / 按钮 -->
-    </el-row>
+    </el-row> -->
+    
     <!-- /搜索 -->
     <!-- {{waiters}} -->
     <!-- 表单数据 -->
@@ -32,18 +33,15 @@
         >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="id" label="编号" align="center" />
-        <el-table-column prop="realname" label="姓名" align="center" />
+        <el-table-column prop="username" label="姓名" align="center" />
         <el-table-column prop="telephone" label="手机号" align="center" />
+        <el-table-column prop="idCard" label="身份证号" align="center" />
+        <el-table-column prop="bankCard" label="银行卡号" align="center" />
+        <el-table-column prop="enabled" label="注册时间" align="center" />
         <el-table-column prop="status" label="状态" align="center" />
         <el-table-column label="操作" align="center">
             <!-- 通过默认的插槽获取该行的对象值scope.row -->
             <template v-slot:default="scope">
-              <!-- 删除 -->
-              <a href="" class="el-icon-delete"/>
-              <span class="blank_margin" />
-              <!-- 修改 -->
-              <a href="" class="el-icon-edit-outline"/>
-              <span class="blank_margin" />
               <!-- 详情 -->
               <a href="" class="el-icon-tickets"/>
             </template>
@@ -61,14 +59,14 @@
     name:'Waiter',
     data() {
       return {
-        title:'顾客管理',
+        title:'员工管理',
 
       }
     },
     //计算属性
     computed:{
       // 映射在vuex中管理的data
-      // 查询所有顾客信息
+      // 查询所有员工信息
       ...mapState("waiter",["waiters"])
     },
     created(){
@@ -76,7 +74,7 @@
     },
     methods:{
       //  映射store中的突变函数和异步请求的动作
-      //查询所有顾客信息
+      //查询所有员工信息
       ...mapActions("waiter",["findAllWaiters"]),
       
       }

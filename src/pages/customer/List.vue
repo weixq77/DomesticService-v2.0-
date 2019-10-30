@@ -1,25 +1,26 @@
 <template>
   <div id="customer">
     <!-- <h4>{{title}}</h4> -->
-    <!-- 搜索框、添加按钮-->
+     <!-- 搜索框、添加按钮-->
     <el-row :gutter="20" justify="end">
       <!-- 搜索栏 -->
       <el-col :span="12">
         <el-form :inline="true">
-          <el-form-item label="姓名">
-            <el-input size="small" v-model="params.realname"></el-input>
+          <el-form-item label="">
+            <el-input size="small" placeholder="请输入内容"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="handleQuery">查询</el-button>
+            <el-button type="primary" size="small">查询</el-button>
           </el-form-item>
         </el-form>
       </el-col>
       <!-- 按钮 -->
       <el-col :span="12" style="text-align:right;line-height:40px;height:40px;">
-        <el-button size="small" type="primary" @click="handleToAdd">添加</el-button>
+        <el-button size="small" type="primary">添加</el-button>
       </el-col>
     <!-- / 按钮 -->
-    </el-row>
+    </el-row> -->
+    
     <!-- /搜索 -->
     <!-- {{customers}} -->
     <!-- 表单数据 -->
