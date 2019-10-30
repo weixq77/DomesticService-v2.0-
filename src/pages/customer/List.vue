@@ -1,10 +1,10 @@
 <template>
   <div id="customer">
     <!-- <h4>{{title}}</h4> -->
-     <!-- 搜索框、添加按钮-->
+     <!-- 搜索框、按钮-->
     <el-row :gutter="20" justify="end">
       <!-- 搜索栏 -->
-      <el-col :span="12">
+      <el-col :span="12"> 
         <el-form :inline="true">
           <el-form-item label="">
             <el-input size="small" placeholder="请输入内容"></el-input>
@@ -14,44 +14,32 @@
           </el-form-item>
         </el-form>
       </el-col>
+      <!-- /搜索栏 -->
       <!-- 按钮 -->
       <el-col :span="12" style="text-align:right;line-height:40px;height:40px;">
         <el-button size="small" type="primary">添加</el-button>
       </el-col>
     <!-- / 按钮 -->
     </el-row>
-    
     <!-- /搜索 -->
-    <!-- {{customers}} -->
+
     <!-- 表单数据 -->
-    <div>
-      <el-table
-          ref="multipleTable"
-          :data="customers"
-          tooltip-effect="dark"
-          style="width: 100%"
-        >
-        <el-table-column type="selection" width="55" />
-        <el-table-column prop="id" label="编号" align="center" />
-        <el-table-column prop="realname" label="姓名" align="center" />
-        <el-table-column prop="telephone" label="手机号" align="center" />
-        <el-table-column prop="status" label="状态" align="center" />
-        <el-table-column label="操作" align="center">
-            <!-- 通过默认的插槽获取该行的对象值scope.row -->
-            <template v-slot:default="scope">
-              <!-- 删除 -->
-              <a href="" class="el-icon-delete"/>
-              <span class="blank_margin" />
-              <!-- 修改 -->
-              <a href="" class="el-icon-edit-outline"/>
-              <span class="blank_margin" />
-              <!-- 详情 -->
-              <a href="" class="el-icon-tickets"/>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <!-- /表单数据 -->
+    <!-- {{customers}} --><!-- {{customers.list}} //分页显示-->
+    <el-table ref="multipleTable" :data="customers" tooltip-effect="dark" style="width: 100%">
+      <el-table-column type="selection" width="55" />
+      <el-table-column prop="id" label="编号" align="center" />
+      <el-table-column prop="realname" label="姓名" align="center" />
+      <el-table-column prop="telephone" label="手机号" align="center" />
+      <el-table-column prop="status" label="状态" align="center" />
+      <el-table-column label="操作" align="center">
+        <!-- 通过默认的插槽获取该行的对象值scope.row -->
+        <template v-slot:default="scope">
+          <!-- 详情 -->
+          <a href="" class="el-icon-tickets"  @click.prevent="DetailsHandler(scope.row)" />
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- /表单数据 -->
   </div>
 </template>
 
@@ -77,10 +65,23 @@
     },
     methods:{
       //  映射store中的突变函数和异步请求的动作
-      //查询所有顾客信息
+
+      //查询所有顾客信息,根据id删除顾客信息，批量删除各科信息
       ...mapActions("customer",["findAllCustomers"]),
+
+      //查看顾客详情信息
+      DetailsHandler(customer){
+        //跳转详情页面
+        this.$router.push({
+          path:'/customer/details',
+          query:{id:customer.id}
+        })
+      },
       
-      }
+      
+     
+      
+    },
   }
 
 </script>

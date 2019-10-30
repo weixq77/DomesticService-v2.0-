@@ -18,14 +18,15 @@ export default {
 
   },
   actions: {
-    //异步交互
+    //异步交互 
+    
     //查询所有顾客信息
     async findAllCustomers(context) {
       const response = await get('/customer/findAll');
       // 将顾客信息设置到state.customers中
       // 使用commit去触发突变，先指定突变名称，再传递一个参数
       context.commit('refreshCustomer',response.data);
+    },
 
-    }
   }
 }

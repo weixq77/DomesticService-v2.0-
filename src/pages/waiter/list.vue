@@ -17,6 +17,7 @@
       <!-- 按钮 -->
       <el-col :span="12" style="text-align:right;line-height:40px;height:40px;">
         <el-button size="small" type="primary">添加</el-button>
+        <el-button type="danger" size="small">批量审核</el-button>
       </el-col>
     <!-- / 按钮 -->
     </el-row>
@@ -24,31 +25,24 @@
     <!-- /搜索 -->
     <!-- {{waiters}} -->
     <!-- 表单数据 -->
-    <div>
-      <el-table
-          ref="multipleTable"
-          :data="waiters"
-          tooltip-effect="dark"
-          style="width: 100%"
-        >
-        <el-table-column type="selection" width="55" />
-        <el-table-column prop="id" label="编号" align="center" />
-        <el-table-column prop="username" label="姓名" align="center" />
-        <el-table-column prop="telephone" label="手机号" align="center" />
-        <el-table-column prop="idCard" label="身份证号" align="center" />
-        <el-table-column prop="bankCard" label="银行卡号" align="center" />
-        <el-table-column prop="enabled" label="注册时间" align="center" />
-        <el-table-column prop="status" label="状态" align="center" />
-        <el-table-column label="操作" align="center">
-            <!-- 通过默认的插槽获取该行的对象值scope.row -->
-            <template v-slot:default="scope">
-              <!-- 详情 -->
-              <a href="" class="el-icon-tickets"/>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <!-- /表单数据 -->
+    <el-table ref="multipleTable" :data="waiters" tooltip-effect="dark" style="width: 100%">
+      <el-table-column type="selection" width="55" />
+      <el-table-column prop="id" label="编号" align="center" />
+      <el-table-column prop="username" label="姓名" align="center" />
+      <el-table-column prop="telephone" label="手机号" align="center" />
+      <el-table-column prop="idCard" label="身份证号" align="center" />
+      <el-table-column prop="bankCard" label="银行卡号" align="center" />
+      <el-table-column prop="enabled" label="注册时间" align="center" />
+      <el-table-column prop="status" label="状态" align="center" />
+      <el-table-column label="操作" align="center">
+        <!-- 通过默认的插槽获取该行的对象值scope.row -->
+        <template v-slot:default="scope">
+          <!-- 详情 -->
+          <a href="" class="el-icon-tickets" @click.prevent="DetailsHandler(scope.row)"/>
+        </template>
+      </el-table-column>
+    </el-table>
+    <!-- /表单数据 -->
   </div>
 </template>
 
