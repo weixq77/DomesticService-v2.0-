@@ -149,6 +149,13 @@ export const asyncRoutes = [
         component: () => import('@/pages/product/list'),
         name: 'product',
         meta: { title: '产品管理', icon: 'shopping', noCache: true }
+      },
+      {
+        path: 'product_details',
+        hidden: true,
+        component: () => import('@/pages/product/productDetails'),
+        name: 'product_details',
+        meta: { title: '产品详情', icon: 'tab', noCache: true }
       }
     ]
   },
