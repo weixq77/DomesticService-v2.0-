@@ -19,7 +19,7 @@
         <el-button size="small" type="primary">添加</el-button>
       </el-col>
     <!-- / 按钮 -->
-    </el-row> -->
+    </el-row>
     
     <!-- /搜索 -->
     <!-- {{waiters}} -->
