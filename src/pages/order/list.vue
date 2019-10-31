@@ -171,6 +171,5 @@ export default {
 .dialog-content {
   height: 300px;
   padding: 0 1em;
-  overflow: scroll;
 }
 </style>

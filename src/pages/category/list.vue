@@ -30,7 +30,7 @@
               <a href="" class="el-icon-edit-outline" @click.prevent="editCategory(record.row)"/>
               <span class="blank_margin" />
               <!-- 详情 -->
-              <a href="">详情</a>
+              <a href="" @click.prevent="toDetailsHandler()">详情</a>
           </template>
         </el-table-column>
       </el-table>
@@ -46,7 +46,16 @@
           <el-input v-model="form.num" auto-complete="off" ></el-input>
         </el-form-item>
         <el-form-item label="图标" label-width="70px" prop="icon">
-          <el-input v-model="form.icon" auto-complete="off" ></el-input>
+          <el-upload
+            class="upload-demo"
+            action="http://47.94.36.193:6677/file/upload"
+            :file-list="fileList"
+            :on-success="uploadSuccessHandler"
+            :limit=1
+            list-type="picture">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -65,7 +74,8 @@ export default {
     data(){
       return{
         form:{}, // 存放添加或修改的单个栏目信息
-        selectedDelete:[] // 存放批量删除的id的数组
+        selectedDelete:[], // 存放批量删除的id的数组
+        fileList:[] //存放照片
       }
     },
      created(){
@@ -80,6 +90,25 @@ export default {
       ...mapActions("category",["findAllCategories","deleteCategoriesById"
       ,"batchDeleteCategories","saveOrUpdateCategory"]),
       // 普通方法
+      // 上传图片
+      uploadSuccessHandler(response){
+        if(response.status === 200){
+          let id = response.data.id;
+          let photo = "http://134.175.154.93:8888/group1/"+id;
+          // 上传图片
+          this.product.photo = photo;
+          // 克隆，强制做双向渲染
+          this.product.photo = Object.assign({},this.product);
+        } else {
+          this.$message.error("上传异常");
+        }
+      },
+      // 显示详情信息
+      toDetailsHandler(){
+        this.$router.push({
+          path:"/category/category_details",
+        })
+      },
       // fun: 添加信息
       addCategory() {
         // 添加信息

@@ -72,7 +72,7 @@
     <!-- 模态框 -->
     <el-dialog :title="title" :visible="visible" width="40%" @close="closeDialog">
       <el-form :model="form"  ref="productForm">
-        {{form}}
+        <!-- {{form}} -->
         <el-form-item label="商品名" label-width="70px" prop="name">
           <el-input v-model="form.name" auto-complete="off" ></el-input>
         </el-form-item>
@@ -90,7 +90,7 @@
         <el-form-item label="产品主图" label-width="70px" prop="description">
           <el-upload
             class="upload-demo"
-            action="https://134.175.154.93/file/upload"
+            action="http://47.94.36.193:6677/file/upload"
             :file-list="fileList"
             :on-success="uploadSuccessHandler"
             :limit=1
@@ -133,9 +133,11 @@ export default {
       // 普通方法
       // 上传图片
       uploadSuccessHandler(response){
-        if(response.data.status === 200){
+        if(response.status === 200){
           let id = response.data.id;
           let photo = "http://134.175.154.93:8888/group1/"+id;
+          // 上传图片
+          this.product.photo = photo;
           // 克隆，强制做双向渲染
           this.product.photo = Object.assign({},this.product);
         } else {
