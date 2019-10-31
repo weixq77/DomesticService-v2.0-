@@ -17,11 +17,15 @@
           <el-col :span="12">
             <el-card :body-style="{ padding: '0px' }">
               <div style="float:left;height:100%;">
-                <img :src="customer.photo" class="image">
+                <!-- <img :src="customer.photo" class="image"> -->
+                <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
               </div>
               <div style="float:left;padding: 14px;">
                 <el-form label-width="50px">
-                  <el-form-item label="姓名:">
+                   <el-form-item label="用户名:">
+                    <span>{{customer.username}}</span>
+                  </el-form-item>
+                  <el-form-item label="真实姓名:">
                     <span>{{customer.realname}}</span>
                   </el-form-item>
                   <el-form-item label="号码:">

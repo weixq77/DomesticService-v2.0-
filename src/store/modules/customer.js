@@ -15,7 +15,10 @@ export default {
     refreshCustomer(state,customers) {
       state.customers = customers;
     },
-
+    // 设置单条顾客信息
+    SetCustomer(state,customer) {
+      state.customer = customer;
+    },
   },
   actions: {
     //异步交互 

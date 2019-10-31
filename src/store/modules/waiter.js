@@ -4,10 +4,15 @@ export default {
   namespaced: true,
   state: {
    waiters:[],//存放当前页所有的顾客信息
-   waiter:{},//单个顾客信息
+   //waiter:{},//单个顾客信息
   },
   getters: {
-   
+    // 过滤员工状态
+    waiterStatusFilter(state){
+      return function(status){
+        return state.waiters.filters((item)=>item.status===status)
+      }
+    }
     
   },
   mutations: {

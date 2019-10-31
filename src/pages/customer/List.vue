@@ -47,7 +47,7 @@
   // 导入封装好的指定json请求函数
   import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
   export default {
-    name:'Customer',
+    name:'customer',
     data() {
       return {
         title:'顾客管理',
@@ -65,12 +65,15 @@
     },
     methods:{
       //  映射store中的突变函数和异步请求的动作
-
-      //查询所有顾客信息,根据id删除顾客信息，批量删除各科信息
+      //查询所有顾客信息
       ...mapActions("customer",["findAllCustomers"]),
+      //设置顾客单条信息
+      ...mapMutations('customer', ['SetCustomer']),
 
       //查看顾客详情信息
       DetailsHandler(customer){
+        // 设置顾客单条信息
+        this.SetCustomer(customer);
         //跳转详情页面
         this.$router.push({
           path:'/customer/details',

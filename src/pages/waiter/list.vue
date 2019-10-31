@@ -16,8 +16,8 @@
       </el-col>
       <!-- 按钮 -->
       <el-col :span="12" style="text-align:right;line-height:40px;height:40px;">
-        <el-button size="small" type="primary">添加</el-button>
-        <el-button type="danger" size="small">批量审核</el-button>
+        <!-- <el-button size="small" type="primary">添加</el-button> -->
+        <el-button type="danger" size="small">批量禁封</el-button>
       </el-col>
     <!-- / 按钮 -->
     </el-row>
@@ -27,18 +27,24 @@
     <!-- 表单数据 -->
     <el-table ref="multipleTable" :data="waiters" tooltip-effect="dark" style="width: 100%">
       <el-table-column type="selection" width="55" />
-      <el-table-column prop="id" label="编号" align="center" />
-      <el-table-column prop="username" label="姓名" align="center" />
+      <el-table-column prop="id" label="编号" width="55" align="center" />
+      <el-table-column prop="username" label="用户名" align="center" />
+      <el-table-column prop="realname" label="真实名字" align="center" />
       <el-table-column prop="telephone" label="手机号" align="center" />
       <el-table-column prop="idCard" label="身份证号" align="center" />
       <el-table-column prop="bankCard" label="银行卡号" align="center" />
       <el-table-column prop="enabled" label="注册时间" align="center" />
-      <el-table-column prop="status" label="状态" align="center" />
-      <el-table-column label="操作" align="center">
-        <!-- 通过默认的插槽获取该行的对象值scope.row -->
+      <el-table-column prop="status" label="状态" width="55" align="center" />
+      <el-table-column label="详情" align="center">
         <template v-slot:default="scope">
           <!-- 详情 -->
           <a href="" class="el-icon-tickets" @click.prevent="DetailsHandler(scope.row)"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="200px">
+        <!-- 通过默认的插槽获取该行的对象值scope.row -->
+        <template v-slot:default="scope">
+          <el-button type="danger" plain round size="small">禁封</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -60,7 +66,7 @@
     //计算属性
     computed:{
       // 映射在vuex中管理的data
-      // 查询所有员工信息
+      // 查询所有员工信息，控制模态框的显示与关闭
       ...mapState("waiter",["waiters"])
     },
     created(){
@@ -70,8 +76,17 @@
       //  映射store中的突变函数和异步请求的动作
       //查询所有员工信息
       ...mapActions("waiter",["findAllWaiters"]),
+  
+      //查看员工详情信息
+      DetailsHandler(waiter){
+        //跳转详情页面
+        this.$router.push({
+          path:'/waiter/details',
+          query:{id:waiter.id}
+        })
+      },
       
-      }
+    },
   }
 
 </script>
