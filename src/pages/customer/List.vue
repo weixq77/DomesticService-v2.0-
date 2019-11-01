@@ -16,9 +16,9 @@
       </el-col>
       <!-- /搜索栏 -->
       <!-- 按钮 -->
-      <el-col :span="12" style="text-align:right;line-height:40px;height:40px;">
+      <!-- <el-col :span="12" style="text-align:right;line-height:40px;height:40px;">
         <el-button size="small" type="primary">添加</el-button>
-      </el-col>
+      </el-col> -->
     <!-- / 按钮 -->
     </el-row>
     <!-- /搜索 -->

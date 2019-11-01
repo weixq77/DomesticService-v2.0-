@@ -34,21 +34,34 @@
       <el-table-column prop="idCard" label="身份证号" align="center" />
       <el-table-column prop="bankCard" label="银行卡号" align="center" />
       <el-table-column prop="enabled" label="注册时间" align="center" />
-      <el-table-column prop="status" label="状态" width="55" align="center" />
-      <el-table-column label="详情" align="center">
+      <el-table-column prop="status" label="状态" align="center" />
+      <el-table-column label="详情" width="55" align="center">
         <template v-slot:default="scope">
           <!-- 详情 -->
           <a href="" class="el-icon-tickets" @click.prevent="DetailsHandler(scope.row)"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200px">
+      <el-table-column label="操作" align="center" width="100px">
         <!-- 通过默认的插槽获取该行的对象值scope.row -->
         <template v-slot:default="scope">
-          <el-button type="danger" plain round size="small">禁封</el-button>
+          <el-button type="danger" plain round size="small" @click="forbiddenWaiter">禁封</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!-- /表单数据 -->
+    <!-- 对话框 -->
+    <el-dialog title="禁封" :visible="visible" width="40%" @close="closeDialog">
+      <el-form :model="form" ref="waiterForm">
+        <el-form-item label="禁封原因" label-width="60px" prop="forbiddenReason">
+          <el-input v-model="form.forbiddenReason" auto-complete="off" type="textarea" ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeModal">取 消</el-button>
+        <el-button type="primary" @click="forbidden">确定禁封</el-button>
+      </div>
+    </el-dialog>
+    <!-- 对话框结束 -->
   </div>
 </template>
 
@@ -60,6 +73,7 @@
     data() {
       return {
         title:'员工管理',
+        form:{},  //存放禁封原因
 
       }
     },
@@ -67,7 +81,11 @@
     computed:{
       // 映射在vuex中管理的data
       // 查询所有员工信息，控制模态框的显示与关闭
-      ...mapState("waiter",["waiters"])
+      ...mapState("waiter",["waiters","visible"]),
+      //显示模态框，关闭模态框，
+      ...mapMutations("waiter",["showModal","closeModal"]),
+      //禁封员工
+      // ...mapActions("waiter",[])
     },
     created(){
       this.findAllWaiters();
@@ -85,7 +103,24 @@
           query:{id:waiter.id}
         })
       },
-      
+      //绑定禁封员工按钮,点击禁封打开模态框
+      forbiddenWaiter(row){
+        this.form = row;
+        this.showModal(); // 显示模态框
+      },
+      //fun:关闭模态框的回调函数
+      closeDialog(){
+        this.form = {};
+        this.closeDialog();
+      },
+      // fun:修改员工的状态
+      updateWaiterStatus($event,waiter){
+
+      },
+      //确定禁封员工，提交禁封理由
+      forbidden(){
+
+      }
     },
   }
 

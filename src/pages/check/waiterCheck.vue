@@ -35,14 +35,14 @@
       <el-table-column prop="idCard" label="身份证号" align="center" />
       <el-table-column prop="bankCard" label="银行卡号" align="center" />
       <el-table-column prop="enabled" label="注册时间" align="center" />
-      <el-table-column prop="status" label="状态" width="55" align="center" />
-      <el-table-column label="详情" align="center">
+      <el-table-column prop="status" label="状态" align="center" />
+      <el-table-column label="详情"  width="55" align="center" @click="waiterDetail">
         <template v-slot:default="scope">
           <!-- 详情 -->
-          <a href="" class="el-icon-tickets" @click.prevent="DetailsHandler(scope.row)"/>
+          <a href="" class="el-icon-tickets"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200px">
+      <el-table-column label="操作" align="center" width="150px">
         <!-- 通过默认的插槽获取该行的对象值scope.row -->
         <template v-slot:default="scope">
           <el-button type="success" plain round size="small">通过</el-button>
@@ -52,22 +52,16 @@
     </el-table>
     <!-- /表单数据 -->
     <!-- 对话框 -->
-    <!-- <el-dialog title="禁封" :visible="visible" width="40%" @close="closeDialog">
-      <el-form :model="form" ref="waiterForm">
-        <el-form-item label="原因" label-width="60px" prop="forbiddenReason">
-          <el-input v-model="form.forbiddenReason" auto-complete="off" type="textarea" ></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="closeModal">取 消</el-button>
-        <el-button type="primary" @click="submitHandler">确定禁封</el-button>
-      </div>
-    </el-dialog> -->
+    <el-dialog title="员工详情" :visible="visible" @close="closeDialog">
+      <el-table :data="gridData">
+        <el-table-row property="realname" label="真实姓名"></el-table-row>
+        <el-table-row property="username" label="用户名" ></el-table-row>
+        <el-table-row property="telephone" label="手机号"></el-table-row>
+      </el-table>
+    </el-dialog>
     <!-- 对话框结束 -->
   </div>
-    </div>
 </template>
-
 <script>
 
 import {mapState,mapGetters,mapMutations,mapActions} from "vuex"
@@ -77,13 +71,18 @@ export default {
   data(){
       return {
           title:"员工审核",
+          waiter:{},
+          gridData:{}//存放员工详情
+          
       }
   },
   //计算属性
   computed:{
     // 映射在vuex中管理的data
     // 查询所有员工信息，控制模态框的显示与关闭
-    ...mapState("waiter",["waiters","visible"])
+    ...mapState("waiter",["waiters","visible"]),
+     //显示模态框，关闭模态框，
+      ...mapMutations("waiter",["showModal","closeModal"]),
   },
   created(){
     this.findAllWaiters();
@@ -92,8 +91,18 @@ export default {
     //  映射store中的突变函数和异步请求的动作
     //查询所有员工信息
     ...mapActions("waiter",["findAllWaiters"]),
-    //显示模态框，关闭模态框
-    ...mapMutations('waiter',["showModal","closeModal"]),
+  
+
+    // fun:关闭模态框的回调函数
+    closeDialog() {
+      this.gridData = {}
+      this.closeModal(); //关闭模态框
+    },
+    //绑定详情按钮，点击详情打开详情模态框
+    waiterDetail(row){
+      this.gridData = row;
+      this.showModal(); // 显示模态框
+    },
   }
 }
 </script>

@@ -10,6 +10,7 @@
       </el-col>
     </el-row>
     <!-- 基本信息 -->
+    {{waiter}}
     <el-tab-pane label="基本信息" name="first">
       <el-row>
         <el-col :span="12">
@@ -17,7 +18,6 @@
             <div style="float:left;height:100%;">
               <!-- <img :src="waiter.photo" class="image"> -->
               <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-
             </div>
             <div style="float:left;padding: 14px;">
               <el-form label-width="50px">
