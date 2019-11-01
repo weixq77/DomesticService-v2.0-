@@ -99,7 +99,7 @@
      </div>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="visible = false" size="small">取 消</el-button>
+        <el-button @click="handleClose" size="small">取 消</el-button>
         <el-button type="primary" size="small" @click="sendOrderHandler">确 定</el-button>
       </span>
     </el-dialog>
@@ -137,8 +137,10 @@ export default {
     handleClick(tab){
       this.activeName = tab.name;
     },
+    // 关闭模态框，清除员工信息 
     handleClose(){
       this.visible = false;
+      this.params.waiterId = [];
     },
     // 打开模态框设置派单对象
     paidanHandler(orderId){
@@ -151,6 +153,8 @@ export default {
         this.sendOrder(this.params).then(()=>{
           this.visible = false;
           this.$notify({ title: '成功', message: this.message, type: 'success' });
+          // 派单完成后清空派单服务员id
+          this.params.waiterId = [];
         })
       }
     },
