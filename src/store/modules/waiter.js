@@ -44,7 +44,19 @@ export default {
       // 将顾客信息设置到state.waiters中
       // 使用commit去触发突变，先指定突变名称，再传递一个参数
       context.commit('refreshWaiter',response.data);
-
     },
+
+    //保存或修改员工信息
+    async saveOrUpdateWaiter({dispatch,commit},waiter){
+      //1.提交请求
+      const response = await post("'/waiter/saveOrUpdate",waiter);
+      // 2.关闭模态框
+      commit("closeModal");
+      // 3.刷新页面
+      dispatch('findAllWaiters');
+      //4.提示成功
+      return response;
+
+    }
   }
 }

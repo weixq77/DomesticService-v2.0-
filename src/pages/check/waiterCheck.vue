@@ -34,7 +34,7 @@
       <el-table-column prop="telephone" label="手机号" align="center" />
       <el-table-column prop="idCard" label="身份证号" align="center" />
       <el-table-column prop="bankCard" label="银行卡号" align="center" />
-      <el-table-column prop="enabled" label="注册时间" align="center" />
+      <el-table-column prop="forbiddenReason" label="禁封原因" align="center" />
       <el-table-column prop="status" label="状态" align="center" />
       <el-table-column label="详情"  width="55" align="center" @click="waiterDetail">
         <template v-slot:default="scope">
@@ -92,17 +92,16 @@ export default {
     //查询所有员工信息
     ...mapActions("waiter",["findAllWaiters"]),
   
-
-    // fun:关闭模态框的回调函数
-    closeDialog() {
-      this.gridData = {}
-      this.closeModal(); //关闭模态框
-    },
-    //绑定详情按钮，点击详情打开详情模态框
-    waiterDetail(row){
-      this.gridData = row;
-      this.showModal(); // 显示模态框
-    },
+  // fun:关闭模态框的回调函数
+  closeDialog() {
+    this.gridData = {}
+    this.closeModal(); //关闭模态框
+  },
+  //绑定详情按钮，点击详情打开详情模态框
+  waiterDetail(row){
+    this.gridData = row;
+    this.showModal(); // 显示模态框
+  },
   }
 }
 </script>
