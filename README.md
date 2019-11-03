@@ -1,3 +1,31 @@
+### 系统PC端图片预览
+
+#### 登录页面
+![登录](https://github.com/weixq77/DomesticService-v2.0-/blob/master/src/assets/preview-images/TIM%E5%9B%BE%E7%89%8720191103223939.png)
+
+#### 顾客管理页面
+![顾客管理页面](https://github.com/weixq77/DomesticService-v2.0-/blob/master/src/assets/preview-images/TIM%E5%9B%BE%E7%89%8720191103223943.png)
+
+#### 顾客详情页
+![顾客详情页](https://github.com/weixq77/DomesticService-v2.0-/blob/master/src/assets/preview-images/TIM%E5%9B%BE%E7%89%8720191103223959.png)
+
+#### 栏目管理页
+![栏目管理页](https://github.com/weixq77/DomesticService-v2.0-/blob/master/src/assets/preview-images/TIM%E5%9B%BE%E7%89%8720191103224033.png)
+
+#### 产品管理页
+![产品管理页](https://github.com/weixq77/DomesticService-v2.0-/blob/master/src/assets/preview-images/TIM%E5%9B%BE%E7%89%8720191103224040.png)
+
+#### 产品修改页
+![产品修改页](https://github.com/weixq77/DomesticService-v2.0-/blob/master/src/assets/preview-images/TIM%E5%9B%BE%E7%89%8720191103224046.jpg)
+
+#### 订单显示页
+![订单显示页](https://github.com/weixq77/DomesticService-v2.0-/blob/master/src/assets/preview-images/TIM%E5%9B%BE%E7%89%8720191103224052.jpg)
+
+#### 员工审核页
+![员工审核页](https://github.com/weixq77/DomesticService-v2.0-/blob/master/src/assets/preview-images/TIM%E5%9B%BE%E7%89%8720191103224056.png)
+
+
+
 <p align="center">
   <img width="320" src="https://wpimg.wallstcn.com/ecc53a42-d79b-42e2-8852-5126b810a4c8.svg">
 </p>
