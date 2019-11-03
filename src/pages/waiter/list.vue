@@ -96,7 +96,7 @@
       // ...mapActions("waiter",[])
     },
     created(){
-      this.findAllWaiters();
+      this.findAllWaiters(true);
     },
     methods:{
       //  映射store中的突变函数和异步请求的动作
@@ -134,7 +134,12 @@
           if(valid){
             // alert(valid);
             // 2.提交表单
-            this.saveOrUpdateWaiter(this.form)
+            this.saveOrUpdateWaiter({
+              waiter: Object.assign(
+                this.form
+              ,{enabled: false}),
+              isFilter: true
+            })
             .then((response)=>{
               // promise为action函数的返回值，异步函数的返回值就是promise的then回调函数的参数
               this.$message({type:"success",message:response.statusText});

@@ -26,7 +26,7 @@
     <!-- /搜索 -->
     <!-- {{waiters}} -->
     <!-- 表单数据 -->
-    <el-table ref="multipleTable" :data="waiters" tooltip-effect="dark" style="width: 100%">
+    <el-table ref="multipleTable" :data="waiters" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
       <el-table-column prop="id" label="编号" width="55" align="center" />
       <el-table-column prop="username" label="用户名" align="center" />
@@ -34,19 +34,20 @@
       <el-table-column prop="telephone" label="手机号" align="center" />
       <el-table-column prop="idCard" label="身份证号" align="center" />
       <el-table-column prop="bankCard" label="银行卡号" align="center" />
+      <el-table-column prop="enabled" label="审批" align="center" />
       <el-table-column prop="forbiddenReason" label="禁封原因" align="center" />
       <el-table-column prop="status" label="状态" align="center" />
-      <el-table-column label="详情"  width="55" align="center" @click="waiterDetail">
+      <el-table-column label="详情"  width="55" align="center">
         <template v-slot:default="scope">
           <!-- 详情 -->
-          <a href="" class="el-icon-tickets"/>
+          <a href="" class="el-icon-tickets"  @click.prevent="waiterDetail(scope.row)"/>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="150px">
         <!-- 通过默认的插槽获取该行的对象值scope.row -->
         <template v-slot:default="scope">
-          <el-button type="success" plain round size="small">通过</el-button>
-          <el-button type="danger" plain round size="small">拒绝</el-button>
+          <el-button type="success" plain round size="small" @click='pass(scope.row)'>通过</el-button>
+          <el-button type="danger" plain round size="small" @click="forbidden(scope.row)">拒绝</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -54,9 +55,9 @@
     <!-- 对话框 -->
     <el-dialog title="员工详情" :visible="visible" @close="closeDialog">
       <el-table :data="gridData">
-        <el-table-row property="realname" label="真实姓名"></el-table-row>
-        <el-table-row property="username" label="用户名" ></el-table-row>
-        <el-table-row property="telephone" label="手机号"></el-table-row>
+        <el-table-column  property="realname" label="真实姓名"></el-table-column >
+        <el-table-column  property="username" label="用户名" ></el-table-column >
+        <el-table-column  property="telephone" label="手机号"></el-table-column >
       </el-table>
     </el-dialog>
     <!-- 对话框结束 -->
@@ -72,8 +73,8 @@ export default {
       return {
           title:"员工审核",
           waiter:{},
-          gridData:{}//存放员工详情
-          
+          gridData:[],//存放员工详情
+          selectionIds: []
       }
   },
   //计算属性
@@ -81,8 +82,7 @@ export default {
     // 映射在vuex中管理的data
     // 查询所有员工信息，控制模态框的显示与关闭
     ...mapState("waiter",["waiters","visible"]),
-     //显示模态框，关闭模态框，
-      ...mapMutations("waiter",["showModal","closeModal"]),
+  
   },
   created(){
     this.findAllWaiters();
@@ -90,7 +90,9 @@ export default {
   methods:{
     //  映射store中的突变函数和异步请求的动作
     //查询所有员工信息
-    ...mapActions("waiter",["findAllWaiters"]),
+    ...mapActions("waiter",["findAllWaiters","saveOrUpdateWaiter"]),
+     //显示模态框，关闭模态框，
+      ...mapMutations("waiter",["showModal","closeModal"]),
   
   // fun:关闭模态框的回调函数
   closeDialog() {
@@ -99,9 +101,40 @@ export default {
   },
   //绑定详情按钮，点击详情打开详情模态框
   waiterDetail(row){
-    this.gridData = row;
+    // console.log(row)
+    this.gridData.push(row);
     this.showModal(); // 显示模态框
   },
+
+  pass(row) {
+    // console.log(row)
+    this.saveOrUpdateWaiter(
+      {
+        waiter: Object.assign(row,{ enabled:true,forbiddenReason: "无"}),
+      }
+      )
+  },
+
+  forbidden(row) {
+
+     this.saveOrUpdateWaiter(
+       {
+        waiter: Object.assign(row,{ enabled:false}),
+        }
+       )
+  },
+
+  handleSelectionChange(selection) {
+    console.log(selection)
+    this.selectionIds = []
+    selection.map(
+      item => {
+        this.selectionIds.push(item.id)
+      }
+    )
+
+    console.log(this.selectionIds.join(","))
+  }
   }
 }
 </script>
