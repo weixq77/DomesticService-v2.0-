@@ -21,7 +21,7 @@
                 <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
               </div>
               <div style="float:left;padding: 14px;">
-                <el-form label-width="50px">
+                <el-form label-width="80px">
                    <el-form-item label="用户名:">
                     <span>{{customer.username}}</span>
                   </el-form-item>
@@ -42,8 +42,7 @@
       </el-tab-pane>
       <!-- /基本信息 -->
       <!-- 订单信息 -->
-      <el-tab-pane label="订单信息" name="second">
-        <!-- {{customersOrders}} -->
+      <!-- <el-tab-pane label="订单信息" name="second">
         <el-table  :data="customersOrders" tooltip-effect="dark" style="width: 100%">
           <el-table-column label="顾客姓名" prop="customerName" align="center"></el-table-column>
           <el-table-column label="员工姓名" prop="waiterName" align="center"></el-table-column>
@@ -51,7 +50,7 @@
           <el-table-column label="订单数量" prop="total" align="center"></el-table-column>
           <el-table-column label="下单时间" :formatter="timestampToTime" prop="orderTime" align="center"></el-table-column>
         </el-table>
-      </el-tab-pane>
+      </el-tab-pane> -->
       <!-- /订单信息 -->
       <!-- 服务地址 -->
       <el-tab-pane label="服务地址" name="third">
@@ -89,7 +88,7 @@
       // 顾客的详细信息
       ...mapState('customer',['customer']),
       //顾客的所有订单
-      ...mapState('order',["customersOrders"]),
+      // ...mapState('order',["customersOrders"]),
       //顾客的所有服务地址
       ...mapState('address',['address'])
 
@@ -103,7 +102,7 @@
     methods:{
       // 映射store中的突变函数和异步请求的动作
       // 根据顾客id查询顾客所有订单信息
-      ...mapActions("order",["loadCustomerOrderData"]),
+      // ...mapActions("order",["loadCustomerOrderData"]),
       //根据顾客id查询地址信息
       ...mapActions("address",["findCustomerAddressById"]),
       
@@ -115,7 +114,7 @@
       //数据加载
       loadData(){
         //根据顾客id查询顾客所有订单信息
-        this.loadCustomerOrderData(this.CustomerId);
+        // this.loadCustomerOrderData(this.CustomerId);
         //通过id查询顾客地址
         this.findCustomerAddressById(this.CustomerId);
       },
@@ -140,7 +139,5 @@
 </script>
 
 <style scoped>
-
-
 
 </style>

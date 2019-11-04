@@ -74,7 +74,7 @@ export default {
           title:"员工审核",
           waiter:{},
           gridData:[],//存放员工详情
-          selectionIds: []
+          selectionIds: [], //存放批量禁封的id
       }
   },
   //计算属性
@@ -89,52 +89,48 @@ export default {
   },
   methods:{
     //  映射store中的突变函数和异步请求的动作
-    //查询所有员工信息
+    //查询所有员工信息，保存或修改员工信息
     ...mapActions("waiter",["findAllWaiters","saveOrUpdateWaiter"]),
      //显示模态框，关闭模态框，
       ...mapMutations("waiter",["showModal","closeModal"]),
   
-  // fun:关闭模态框的回调函数
-  closeDialog() {
-    this.gridData = {}
-    this.closeModal(); //关闭模态框
-  },
-  //绑定详情按钮，点击详情打开详情模态框
-  waiterDetail(row){
-    // console.log(row)
-    this.gridData.push(row);
-    this.showModal(); // 显示模态框
-  },
+    // fun:关闭模态框的回调函数
+    closeDialog() {
+      this.gridData = {}
+      this.closeModal(); //关闭模态框
+    },
+    //绑定详情按钮，点击详情打开详情模态框
+    waiterDetail(row){
+      // console.log(row)
+      this.gridData.push(row);
+      this.showModal(); // 显示模态框
+    },
 
-  pass(row) {
-    // console.log(row)
-    this.saveOrUpdateWaiter(
-      {
+    //通过，将enabled改为true。禁封理由为无
+    pass(row) {
+      // console.log(row)
+      this.saveOrUpdateWaiter({
         waiter: Object.assign(row,{ enabled:true,forbiddenReason: "无"}),
-      }
-      )
-  },
-
-  forbidden(row) {
-
-     this.saveOrUpdateWaiter(
-       {
+      })
+    },
+    //禁封，将enabled改为false
+    forbidden(row) {
+      this.saveOrUpdateWaiter({
         waiter: Object.assign(row,{ enabled:false}),
-        }
-       )
-  },
+      })
+    },
 
-  handleSelectionChange(selection) {
-    console.log(selection)
-    this.selectionIds = []
-    selection.map(
-      item => {
+    //批量禁封
+    handleSelectionChange(selection) {
+      // console.log(selection)
+      this.selectionIds = []
+      //选中的id
+      selection.map(item => {
         this.selectionIds.push(item.id)
-      }
-    )
-
-    console.log(this.selectionIds.join(","))
-  }
+      })
+      // console.log(this.selectionIds.join(","))
+      // this.forbidden(this.selectionIds.join(","));
+    }
   }
 }
 </script>

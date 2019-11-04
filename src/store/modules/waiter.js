@@ -10,12 +10,11 @@ export default {
   },
   getters: {
     // 过滤员工状态
-    waiterStatusFilter(state){
-      return function(status){
-        return state.waiters.filters((item)=>item.status===status)
-      }
-    }
-    
+    // waiterStatusFilter(state){
+    //   return function(status){
+    //     return state.waiters.filters((item)=>item.status===status)
+    //   }
+    // }
   },
   mutations: {
     //  刷新顾客信息
@@ -53,7 +52,7 @@ export default {
        })
        tempData.map(item => {
       
-        !item.enabled?item.enabled = "未审核":item.enabled="审核"
+        !item.enabled?item.enabled = "未审核":item.enabled="已审核"
         !item.idCard?item.idCard = "无":item.idCard
         !item.bankCard?item.bankCard = "无":item.bankCard
         return true
@@ -63,7 +62,7 @@ export default {
       } else {
         tempData.map(item => {
       
-          !item.enabled?item.enabled = "未审核":item.enabled="审核"
+          !item.enabled?item.enabled = "未审核":item.enabled="已审核"
           !item.idCard?item.idCard = "无":item.idCard
           !item.bankCard?item.bankCard = "无":item.bankCard
           return true
